@@ -1,0 +1,1984 @@
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#C9A96E;--gold-light:#E8D5A3;--gold-dark:#8B6914;
+  --purple:#6B3FA0;--purple-light:#9B6FD0;--purple-gem:#4A1F7A;
+  --black:#0A0A0A;--marble:#0D0D0F;--surface:#141418;--surface2:#1C1C22;
+  --cream:#F5F0E8;--text:#E8E0D0;--muted:#8A8070;
+  --serif:'Cormorant Garamond',serif;--sans:'Jost',sans-serif;
+}
+
+body{background:var(--marble);color:var(--text);font-family:var(--sans);font-weight:300;min-height:100vh;overflow-x:hidden}
+
+/* MARBLE TEXTURE */
+body::before{content:'';position:fixed;inset:0;background:
+  radial-gradient(ellipse at 20% 20%,rgba(201,169,110,0.04) 0%,transparent 50%),
+  radial-gradient(ellipse at 80% 80%,rgba(107,63,160,0.06) 0%,transparent 50%),
+  linear-gradient(135deg,#0A0A0A 0%,#0E0E12 40%,#0A0A0E 100%);
+  pointer-events:none;z-index:0}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,0.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(201,169,110,0.15);padding:0 2rem}
+.nav-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:70px}
+.nav-logo{font-family:var(--serif);font-size:1.5rem;font-weight:600;color:var(--gold);letter-spacing:0.15em;cursor:pointer}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;transition:color 0.3s;cursor:pointer}
+.nav-links a:hover{color:var(--gold)}
+.nav-icons{display:flex;gap:1.2rem;align-items:center}
+.nav-icon{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.1rem;transition:color 0.3s;position:relative}
+.nav-icon:hover{color:var(--gold)}
+.cart-count{position:absolute;top:-6px;right:-6px;background:var(--purple);color:#fff;font-size:9px;border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center;font-family:var(--sans)}
+
+/* PAGES */
+.page{display:none;position:relative;z-index:1;min-height:calc(100vh - 70px)}
+.page.active{display:block}
+
+/* HERO */
+.hero{height:92vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;text-align:center}
+.hero-bg{position:absolute;inset:0;background:
+  linear-gradient(to bottom,transparent 0%,rgba(10,10,10,0.5) 60%,var(--marble) 100%),
+  radial-gradient(ellipse at 50% 30%,rgba(201,169,110,0.08) 0%,transparent 60%)}
+.hero-ornament{position:absolute;top:10%;left:50%;transform:translateX(-50%);width:300px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);opacity:0.4}
+.hero-content{position:relative;z-index:2;max-width:800px;padding:2rem}
+.hero-subtitle{font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem}
+.hero-title{font-family:var(--serif);font-size:clamp(2.8rem,6vw,5rem);font-weight:300;line-height:1.1;color:var(--cream);margin-bottom:1.5rem}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-desc{font-size:0.85rem;color:var(--muted);letter-spacing:0.05em;line-height:1.8;margin-bottom:2.5rem;max-width:500px;margin-left:auto;margin-right:auto}
+.btn-primary{display:inline-block;padding:0.9rem 2.5rem;border:1px solid var(--gold);color:var(--gold);font-family:var(--sans);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;transition:all 0.35s;background:transparent;margin:0.4rem}
+.btn-primary:hover{background:var(--gold);color:var(--black)}
+.btn-secondary{display:inline-block;padding:0.9rem 2.5rem;border:1px solid rgba(201,169,110,0.3);color:var(--muted);font-family:var(--sans);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;transition:all 0.35s;background:transparent;margin:0.4rem}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
+.scroll-indicator{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.5rem;color:var(--muted);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollAnim 1.5s ease-in-out infinite}
+@keyframes scrollAnim{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* VIDEO HERO */
+.video-hero{position:relative;width:100%;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.video-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.video-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,10,10,0.3) 0%,rgba(10,10,10,0.5) 60%,var(--marble) 100%);z-index:1}
+.video-placeholder{position:absolute;inset:0;background:linear-gradient(135deg,#0a0810 0%,#1a1025 30%,#0d0a15 60%,#0a0a10 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:0}
+.video-placeholder-icon{font-family:var(--serif);font-size:8rem;color:rgba(201,169,110,0.08);line-height:1;margin-bottom:1rem;animation:pulse 3s ease-in-out infinite}
+.video-placeholder-text{font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(201,169,110,0.25)}
+@keyframes pulse{0%,100%{opacity:0.5}50%{opacity:1}}
+.video-hero .hero-content{z-index:2;position:relative}
+.video-hero .scroll-indicator{z-index:2}
+.video-play-hint{position:absolute;bottom:6rem;right:3rem;z-index:3;display:flex;align-items:center;gap:0.6rem;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(201,169,110,0.5)}
+.video-play-hint-circle{width:28px;height:28px;border:1px solid rgba(201,169,110,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* SECTION COMMONS */
+section{padding:5rem 2rem;max-width:1400px;margin:0 auto}
+.section-label{font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+.section-title{font-family:var(--serif);font-size:clamp(2rem,4vw,3rem);font-weight:300;color:var(--cream);margin-bottom:0.5rem}
+.section-title em{font-style:italic;color:var(--gold)}
+.divider{width:60px;height:1px;background:linear-gradient(to right,var(--gold),transparent);margin:1.5rem 0}
+
+/* COLLECTIONS GRID */
+.collections-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+.collection-card{position:relative;overflow:hidden;cursor:pointer}
+.collection-card:first-child{grid-column:span 2}
+.collection-card:nth-child(3){grid-column:1}
+.collection-card:nth-child(4){grid-column:2}
+.collection-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:var(--surface2);transition:transform 0.6s ease}
+.collection-card:first-child .collection-img{aspect-ratio:16/7}
+.collection-card:hover .collection-img{transform:scale(1.05)}
+.collection-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.85) 0%,transparent 50%);display:flex;flex-direction:column;justify-content:flex-end;padding:2rem}
+.collection-tag{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem}
+.collection-name{font-family:var(--serif);font-size:1.8rem;font-weight:300;color:var(--cream)}
+.collection-count{font-size:0.72rem;color:var(--muted);margin-top:0.3rem}
+.col-gem{display:inline-block;width:6px;height:6px;background:var(--purple-light);border-radius:50%;margin-right:8px;vertical-align:middle}
+
+/* PRODUCT CARDS */
+.products-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-top:3rem}
+.product-card{background:var(--surface);border:1px solid rgba(201,169,110,0.1);overflow:hidden;cursor:pointer;transition:border-color 0.3s,transform 0.3s}
+.product-card:hover{border-color:rgba(201,169,110,0.35);transform:translateY(-3px)}
+.product-img{width:100%;aspect-ratio:3/4;background:var(--surface2);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.product-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.product-img-placeholder{font-family:var(--serif);font-size:3.5rem;color:rgba(201,169,110,0.35);text-align:center;padding:1rem;display:flex;flex-direction:column;align-items:center;gap:0.8rem}
+.product-img-placeholder::after{content:'No image yet';font-family:var(--sans);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(201,169,110,0.2)}
+.product-badge{position:absolute;top:1rem;left:1rem;background:var(--purple-gem);color:#E8D0FF;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;padding:4px 10px}
+.product-wishlist{position:absolute;top:1rem;right:1rem;background:rgba(10,10,10,0.7);border:none;color:var(--muted);width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:color 0.3s;font-size:1rem}
+.product-wishlist:hover{color:#FF6B8A}
+.product-wishlist.active{color:#FF6B8A}
+.product-info{padding:1rem}
+.product-name{font-family:var(--serif);font-size:1rem;color:var(--cream);margin-bottom:0.3rem}
+.product-material{font-size:0.68rem;color:var(--muted);letter-spacing:0.08em;margin-bottom:0.6rem}
+.product-price{display:flex;align-items:center;gap:0.7rem}
+.price-current{font-family:var(--serif);font-size:1.1rem;color:var(--gold)}
+.price-old{font-size:0.8rem;color:var(--muted);text-decoration:line-through}
+.price-discount{font-size:0.65rem;color:#8FD48A;letter-spacing:0.05em}
+
+/* BRAND STORY */
+.brand-story{background:var(--surface);border:1px solid rgba(201,169,110,0.12);padding:4rem;margin:2rem 0;position:relative;overflow:hidden}
+.brand-story::before{content:'L';position:absolute;right:-0.5rem;top:50%;transform:translateY(-50%);font-family:var(--serif);font-size:18rem;font-weight:600;color:rgba(201,169,110,0.04);line-height:1;pointer-events:none}
+.brand-story-inner{max-width:600px}
+.brand-story p{font-size:0.9rem;line-height:2;color:var(--muted);margin-bottom:1rem}
+.brand-story p strong{color:var(--cream);font-weight:400}
+
+/* CRAFTSMANSHIP */
+.craft-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3rem}
+.craft-item{text-align:center;padding:2rem}
+.craft-icon{width:48px;height:48px;margin:0 auto 1.5rem;border:1px solid rgba(201,169,110,0.3);display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+.craft-title{font-family:var(--serif);font-size:1.1rem;color:var(--cream);margin-bottom:0.7rem}
+.craft-desc{font-size:0.78rem;color:var(--muted);line-height:1.8}
+
+/* TESTIMONIALS */
+.testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+.testimonial-card{background:var(--surface);border:1px solid rgba(201,169,110,0.1);padding:2rem}
+.stars{color:var(--gold);font-size:0.75rem;letter-spacing:0.1em;margin-bottom:1rem}
+.testimonial-text{font-family:var(--serif);font-size:1.05rem;font-style:italic;color:var(--cream);line-height:1.7;margin-bottom:1.2rem}
+.testimonial-author{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)}
+.gem-dot{display:inline-block;width:5px;height:5px;background:var(--purple-light);border-radius:50%;margin:0 6px;vertical-align:middle}
+
+/* GALLERY */
+.gallery-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0.5rem;margin-top:2rem}
+.gallery-item{aspect-ratio:1;background:var(--surface2);overflow:hidden;cursor:pointer;position:relative}
+.gallery-item:hover::after{content:'';position:absolute;inset:0;background:rgba(201,169,110,0.2)}
+.gallery-emoji{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;color:rgba(201,169,110,0.3);font-family:var(--serif)}
+
+/* NEWSLETTER */
+.newsletter{background:linear-gradient(135deg,var(--surface) 0%,rgba(107,63,160,0.1) 100%);border:1px solid rgba(201,169,110,0.15);padding:4rem;text-align:center;margin:2rem 0}
+.newsletter-title{font-family:var(--serif);font-size:2.2rem;font-weight:300;color:var(--cream);margin-bottom:0.7rem}
+.newsletter-desc{font-size:0.8rem;color:var(--muted);margin-bottom:2rem;letter-spacing:0.05em}
+.newsletter-form{display:flex;max-width:460px;margin:0 auto;gap:0}
+.newsletter-input{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.3);border-right:none;color:var(--text);padding:0.9rem 1.2rem;font-family:var(--sans);font-size:0.8rem;outline:none}
+.newsletter-input::placeholder{color:var(--muted)}
+.newsletter-btn{background:var(--gold);color:var(--black);border:none;padding:0.9rem 1.5rem;font-family:var(--sans);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;font-weight:500;transition:background 0.3s;white-space:nowrap}
+.newsletter-btn:hover{background:var(--gold-light)}
+
+/* FOOTER */
+footer{background:var(--black);border-top:1px solid rgba(201,169,110,0.12);padding:3rem 2rem 1.5rem}
+.footer-inner{max-width:1400px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+.footer-brand{font-family:var(--serif);font-size:1.4rem;color:var(--gold);letter-spacing:0.1em;margin-bottom:1rem}
+.footer-tagline{font-size:0.75rem;color:var(--muted);line-height:1.8;max-width:220px}
+.footer-heading{font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:0.6rem}
+.footer-links a{font-size:0.78rem;color:var(--muted);text-decoration:none;cursor:pointer;transition:color 0.3s}
+.footer-links a:hover{color:var(--cream)}
+.footer-social{display:flex;gap:1rem;margin-top:1.5rem}
+.social-btn{width:34px;height:34px;border:1px solid rgba(201,169,110,0.25);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:0.85rem;cursor:pointer;transition:all 0.3s}
+.social-btn:hover{border-color:var(--gold);color:var(--gold)}
+.footer-bottom{border-top:1px solid rgba(201,169,110,0.08);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-size:0.7rem;color:var(--muted)}
+.footer-policies{display:flex;gap:1.5rem}
+.footer-policies a{font-size:0.7rem;color:var(--muted);text-decoration:none;cursor:pointer;transition:color 0.3s}
+.footer-policies a:hover{color:var(--gold)}
+
+/* SHOP PAGE */
+.shop-header{padding:4rem 2rem 2rem;max-width:1400px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between}
+.filter-bar{background:var(--surface);border:1px solid rgba(201,169,110,0.1);padding:1rem 2rem;max-width:1400px;margin:0 auto;display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap}
+.filter-label{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-right:0.5rem}
+.filter-btn{background:none;border:1px solid rgba(201,169,110,0.2);color:var(--muted);font-family:var(--sans);font-size:0.7rem;letter-spacing:0.08em;padding:0.4rem 1rem;cursor:pointer;transition:all 0.3s}
+.filter-btn:hover,.filter-btn.active{border-color:var(--gold);color:var(--gold)}
+.search-bar{background:rgba(255,255,255,0.04);border:1px solid rgba(201,169,110,0.2);color:var(--text);padding:0.4rem 1rem;font-family:var(--sans);font-size:0.78rem;outline:none;min-width:200px}
+.search-bar::placeholder{color:var(--muted)}
+.shop-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;padding:2rem;max-width:1400px;margin:0 auto}
+
+/* PRODUCT DETAIL */
+.product-detail{padding:3rem 2rem;max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem}
+.product-images{position:relative}
+.main-image{width:100%;aspect-ratio:3/4;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:4rem;color:rgba(201,169,110,0.2);margin-bottom:1rem}
+.thumb-row{display:flex;gap:0.5rem}
+.thumb{width:70px;height:90px;background:var(--surface2);cursor:pointer;border:1px solid transparent;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:rgba(201,169,110,0.3);transition:border-color 0.3s}
+.thumb:hover,.thumb.active{border-color:var(--gold)}
+.product-detail-info{}
+.breadcrumb{font-size:0.68rem;color:var(--muted);margin-bottom:1.5rem;letter-spacing:0.05em}
+.breadcrumb span{color:var(--gold)}
+.detail-name{font-family:var(--serif);font-size:2.2rem;font-weight:300;color:var(--cream);line-height:1.2;margin-bottom:0.5rem}
+.detail-material{font-size:0.75rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem}
+.rating-row{display:flex;align-items:center;gap:0.8rem;margin-bottom:1.5rem}
+.rating-stars{color:var(--gold);font-size:0.8rem}
+.rating-count{font-size:0.75rem;color:var(--muted)}
+.detail-price{font-family:var(--serif);font-size:2rem;color:var(--gold);margin-bottom:0.5rem}
+.detail-price-old{font-size:0.9rem;color:var(--muted);text-decoration:line-through;margin-left:0.5rem}
+.stock-status{font-size:0.72rem;color:#8FD48A;letter-spacing:0.08em;margin-bottom:2rem}
+.color-label{font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.7rem}
+.color-swatches{display:flex;gap:0.5rem;margin-bottom:1.5rem}
+.swatch{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:border-color 0.3s}
+.swatch.active{border-color:var(--gold);padding:2px}
+.swatch-inner{width:100%;height:100%;border-radius:50%}
+.qty-row{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem}
+.qty-btn{width:36px;height:36px;background:none;border:1px solid rgba(201,169,110,0.25);color:var(--gold);font-size:1.1rem;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center}
+.qty-btn:hover{background:rgba(201,169,110,0.1)}
+.qty-val{font-family:var(--serif);font-size:1.1rem;color:var(--cream);min-width:30px;text-align:center}
+.action-row{display:flex;gap:0.8rem;margin-bottom:2rem;flex-wrap:wrap}
+.btn-cart{flex:1;padding:1rem;background:var(--gold);color:var(--black);border:none;font-family:var(--sans);font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;font-weight:500;transition:background 0.3s;min-width:150px}
+.btn-cart:hover{background:var(--gold-light)}
+.btn-buy{flex:1;padding:1rem;background:transparent;color:var(--gold);border:1px solid var(--gold);font-family:var(--sans);font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;transition:all 0.3s;min-width:150px}
+.btn-buy:hover{background:var(--gold);color:var(--black)}
+.btn-wish{width:48px;height:48px;background:none;border:1px solid rgba(201,169,110,0.25);color:var(--muted);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s}
+.btn-wish:hover{border-color:#FF6B8A;color:#FF6B8A}
+.detail-accordion{border-top:1px solid rgba(201,169,110,0.12)}
+.acc-item{border-bottom:1px solid rgba(201,169,110,0.08)}
+.acc-header{display:flex;justify-content:space-between;align-items:center;padding:1rem 0;cursor:pointer;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);transition:color 0.3s}
+.acc-header:hover{color:var(--cream)}
+.acc-body{padding:0 0 1rem;font-size:0.82rem;color:var(--muted);line-height:1.8;display:none}
+.acc-body.open{display:block}
+
+/* ABOUT PAGE */
+.about-hero{height:40vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;border-bottom:1px solid rgba(201,169,110,0.1)}
+.about-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(107,63,160,0.12) 0%,transparent 70%)}
+.about-content{padding:4rem 2rem;max-width:900px;margin:0 auto}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;margin:3rem 0}
+.about-img-block{width:100%;aspect-ratio:4/5;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:5rem;color:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.08)}
+.about-text p{font-size:0.88rem;color:var(--muted);line-height:2;margin-bottom:1rem}
+.values-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;margin-top:3rem}
+.value-item{padding:1.5rem;border:1px solid rgba(201,169,110,0.1);background:var(--surface)}
+.value-num{font-family:var(--serif);font-size:2.5rem;color:rgba(201,169,110,0.2);margin-bottom:0.5rem}
+.value-title{font-family:var(--serif);font-size:1rem;color:var(--cream);margin-bottom:0.4rem}
+.value-desc{font-size:0.78rem;color:var(--muted);line-height:1.7}
+
+/* CART */
+.cart-container{padding:3rem 2rem;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 380px;gap:3rem}
+.cart-items{display:flex;flex-direction:column;gap:1rem}
+.cart-item{display:flex;gap:1.5rem;padding:1.5rem;background:var(--surface);border:1px solid rgba(201,169,110,0.1)}
+.cart-item-img{width:90px;height:110px;background:var(--surface2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:2rem;color:rgba(201,169,110,0.25);font-family:var(--serif)}
+.cart-item-info{flex:1}
+.cart-item-name{font-family:var(--serif);font-size:1.1rem;color:var(--cream);margin-bottom:0.3rem}
+.cart-item-detail{font-size:0.72rem;color:var(--muted);margin-bottom:0.8rem}
+.cart-item-price{font-family:var(--serif);font-size:1.1rem;color:var(--gold)}
+.cart-summary{background:var(--surface);border:1px solid rgba(201,169,110,0.1);padding:2rem;height:fit-content;position:sticky;top:90px}
+.summary-title{font-family:var(--serif);font-size:1.3rem;color:var(--cream);margin-bottom:1.5rem}
+.summary-row{display:flex;justify-content:space-between;font-size:0.82rem;color:var(--muted);margin-bottom:0.8rem}
+.summary-total{display:flex;justify-content:space-between;font-family:var(--serif);font-size:1.2rem;color:var(--gold);padding-top:1rem;border-top:1px solid rgba(201,169,110,0.15);margin-top:0.5rem}
+.coupon-row{display:flex;gap:0;margin:1.5rem 0}
+.coupon-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(201,169,110,0.2);border-right:none;color:var(--text);padding:0.7rem 1rem;font-family:var(--sans);font-size:0.78rem;outline:none}
+.coupon-btn{background:none;border:1px solid rgba(201,169,110,0.2);color:var(--gold);padding:0.7rem 1rem;font-family:var(--sans);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.3s}
+.coupon-btn:hover{background:rgba(201,169,110,0.1)}
+.checkout-btn{width:100%;padding:1.1rem;background:var(--gold);color:var(--black);border:none;font-family:var(--sans);font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;font-weight:500;margin-top:1rem;transition:background 0.3s}
+.checkout-btn:hover{background:var(--gold-light)}
+
+/* REVIEWS */
+.reviews-section{padding:4rem 2rem;max-width:1200px;margin:0 auto}
+.review-summary{display:grid;grid-template-columns:auto 1fr;gap:3rem;margin-bottom:3rem;padding-bottom:3rem;border-bottom:1px solid rgba(201,169,110,0.1)}
+.big-rating{text-align:center}
+.big-num{font-family:var(--serif);font-size:4rem;color:var(--gold)}
+.big-stars{color:var(--gold);font-size:1rem;margin:.3rem 0}
+.big-count{font-size:0.72rem;color:var(--muted)}
+.rating-bars{display:flex;flex-direction:column;gap:0.5rem;max-width:400px}
+.rating-bar-row{display:flex;align-items:center;gap:0.8rem;font-size:0.75rem;color:var(--muted)}
+.rating-bar-track{flex:1;height:4px;background:var(--surface2);border-radius:2px;overflow:hidden}
+.rating-bar-fill{height:100%;background:var(--gold);border-radius:2px}
+.reviews-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
+.review-card{background:var(--surface);border:1px solid rgba(201,169,110,0.1);padding:1.8rem}
+.reviewer-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem}
+.reviewer-name{font-size:0.82rem;color:var(--cream);font-weight:400;letter-spacing:0.05em}
+.review-date{font-size:0.68rem;color:var(--muted)}
+.review-text{font-family:var(--serif);font-size:0.95rem;font-style:italic;color:var(--text);line-height:1.7;margin-top:0.7rem}
+.review-verified{font-size:0.65rem;color:#8FD48A;letter-spacing:0.08em;margin-top:0.7rem}
+
+/* FAQ */
+.faq-section{padding:4rem 2rem;max-width:800px;margin:0 auto}
+.faq-item{border-bottom:1px solid rgba(201,169,110,0.1)}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:1.3rem 0;cursor:pointer;font-family:var(--serif);font-size:1.05rem;color:var(--cream);transition:color 0.3s}
+.faq-q:hover{color:var(--gold)}
+.faq-toggle{color:var(--gold);font-size:1.2rem;font-weight:300;min-width:20px;text-align:center}
+.faq-a{padding:0 0 1.2rem;font-size:0.85rem;color:var(--muted);line-height:1.9;display:none}
+.faq-a.open{display:block}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;padding:4rem 2rem;max-width:1200px;margin:0 auto}
+.contact-info-item{display:flex;gap:1rem;margin-bottom:2rem;align-items:flex-start}
+.contact-icon{width:40px;height:40px;border:1px solid rgba(201,169,110,0.25);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1rem;flex-shrink:0}
+.contact-info-label{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.3rem}
+.contact-info-val{font-size:0.85rem;color:var(--muted);line-height:1.7}
+.form-field{margin-bottom:1.2rem}
+.form-label{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:0.5rem}
+.form-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,169,110,0.15);color:var(--text);padding:0.8rem 1rem;font-family:var(--sans);font-size:0.82rem;outline:none;transition:border-color 0.3s}
+.form-input:focus{border-color:rgba(201,169,110,0.4)}
+.form-textarea{height:120px;resize:vertical}
+
+/* WISHLIST */
+.wishlist-section{padding:4rem 2rem;max-width:1200px;margin:0 auto}
+.wishlist-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-top:2rem}
+
+/* CHECKOUT */
+.checkout-grid{display:grid;grid-template-columns:1fr 400px;gap:3rem;padding:3rem 2rem;max-width:1200px;margin:0 auto}
+.checkout-form{}
+.checkout-section{background:var(--surface);border:1px solid rgba(201,169,110,0.1);padding:2rem;margin-bottom:1.5rem}
+.checkout-section-title{font-family:var(--serif);font-size:1.1rem;color:var(--cream);margin-bottom:1.5rem;padding-bottom:0.8rem;border-bottom:1px solid rgba(201,169,110,0.1)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.payment-option{display:flex;align-items:center;gap:0.8rem;padding:0.8rem;border:1px solid rgba(201,169,110,0.15);cursor:pointer;margin-bottom:0.5rem;transition:border-color 0.3s}
+.payment-option.active{border-color:var(--gold)}
+.payment-radio{width:16px;height:16px;border:1px solid rgba(201,169,110,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.payment-radio-dot{width:8px;height:8px;background:var(--gold);border-radius:50%;display:none}
+.payment-option.active .payment-radio-dot{display:block}
+.payment-label{font-size:0.8rem;color:var(--text)}
+
+/* COLLECTION ROW CARDS */
+.collection-row-card{display:grid;grid-template-columns:1fr 2fr;background:var(--surface);border:1px solid rgba(201,169,110,0.1);overflow:hidden;cursor:pointer;transition:border-color 0.3s}
+.collection-row-img{height:200px;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:4rem;color:rgba(201,169,110,0.25)}
+
+/* POLICY PAGES */
+.policy-content{padding:4rem 2rem;max-width:800px;margin:0 auto}
+.policy-content h2{font-family:var(--serif);font-size:1.3rem;color:var(--cream);margin:2rem 0 0.8rem}
+.policy-content p{font-size:0.85rem;color:var(--muted);line-height:1.9;margin-bottom:0.8rem}
+
+/* TRACK ORDER */
+.track-section{padding:4rem 2rem;max-width:700px;margin:0 auto;text-align:center}
+.track-steps{display:flex;justify-content:space-between;align-items:flex-start;margin:3rem 0;position:relative}
+.track-steps::before{content:'';position:absolute;top:20px;left:10%;right:10%;height:1px;background:rgba(201,169,110,0.2)}
+.track-step{display:flex;flex-direction:column;align-items:center;gap:0.7rem;flex:1;position:relative;z-index:1}
+.track-step-dot{width:40px;height:40px;border:1px solid rgba(201,169,110,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:var(--muted);background:var(--marble)}
+.track-step.done .track-step-dot{background:var(--gold);color:var(--black);border-color:var(--gold)}
+.track-step.active .track-step-dot{border-color:var(--gold);color:var(--gold)}
+.track-step-label{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);text-align:center}
+
+/* SIZE GUIDE */
+.size-table{width:100%;border-collapse:collapse;margin:2rem 0}
+.size-table th{text-align:left;padding:0.8rem 1rem;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid rgba(201,169,110,0.2)}
+.size-table td{padding:0.8rem 1rem;font-size:0.82rem;color:var(--muted);border-bottom:1px solid rgba(201,169,110,0.07)}
+.size-table tr:hover td{color:var(--cream)}
+
+/* TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--surface);border:1px solid var(--gold);color:var(--cream);padding:1rem 1.5rem;font-size:0.8rem;z-index:9999;transform:translateX(200%);transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);max-width:300px}
+.toast.show{transform:translateX(0)}
+
+/* EXTRA SMALL SCREENS */
+@media(max-width:380px){
+  .nav-logo{font-size:1.05rem;letter-spacing:0.08em}
+  .hero-title{font-size:1.7rem}
+  .btn-primary,.btn-secondary{padding:0.7rem 1.1rem;font-size:0.6rem;letter-spacing:0.12em}
+  .products-grid,.shop-grid,.wishlist-grid{grid-template-columns:1fr}
+  .product-name{font-size:0.78rem}
+  .newsletter-form{gap:0}
+}
+
+/* PAGE HEADER COMMON */
+.page-header{padding:4rem 2rem 2rem;max-width:1400px;margin:0 auto;border-bottom:1px solid rgba(201,169,110,0.1)}
+.page-header-sub{font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem}
+.page-header-title{font-family:var(--serif);font-size:clamp(2rem,4vw,3rem);font-weight:300;color:var(--cream)}
+
+/* MOBILE MENU HAMBURGER */
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;min-width:44px;min-height:44px;align-items:center;justify-content:center}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--muted);transition:all 0.3s}
+.hamburger:hover span{background:var(--gold)}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);background:var(--gold)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);background:var(--gold)}
+.mobile-menu{display:none;position:fixed;inset:0;top:70px;background:rgba(10,10,10,0.98);backdrop-filter:blur(20px);z-index:99;padding:2rem;flex-direction:column;gap:0;border-top:1px solid rgba(201,169,110,0.15);overflow-y:auto}
+.mobile-menu.open{display:flex}
+.mobile-menu a{display:block;padding:1.1rem 0;font-size:0.85rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid rgba(201,169,110,0.08);cursor:pointer;transition:color 0.3s}
+.mobile-menu a:hover{color:var(--gold)}
+.mobile-menu-actions{display:flex;gap:1rem;margin-top:2rem}
+.mobile-menu-actions a,.mobile-menu-actions button{flex:1;padding:0.9rem;text-align:center;font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:all 0.3s;text-decoration:none}
+
+/* MOBILE */
+@media(max-width:768px){
+  /* Nav */
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  nav{padding:0 1rem}
+  .nav-logo{font-size:1.2rem}
+  .nav-icons{gap:0.5rem}
+  #nav-auth-link{display:none}
+  .nav-icon{min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center}
+
+  /* Hero */
+  .video-hero{height:85vh;min-height:500px}
+  .hero-title{font-size:2rem;line-height:1.2}
+  .hero-desc{font-size:0.78rem}
+  .hero-content{padding:1rem}
+  .btn-primary,.btn-secondary{padding:0.75rem 1.5rem;font-size:0.65rem}
+  .hero-content > div > .btn-primary,
+  .hero-content > div > .btn-secondary{display:inline-block;width:auto;margin:0.3rem 0.2rem}
+
+  /* Sections */
+  section{padding:3rem 1rem}
+  .page-header{padding:2rem 1rem 1.5rem}
+  .section-title{font-size:1.8rem}
+
+  /* Grids */
+  .collections-grid{grid-template-columns:1fr}
+  .collection-card:first-child,.collection-card:nth-child(3),.collection-card:nth-child(4){grid-column:1}
+  #page-collections section > div > div[style*="grid-template-columns"]{grid-template-columns:1fr !important}
+  #page-collections section > div > div > div[style*="grid-template-columns:1fr 2fr"]{grid-template-columns:1fr !important}
+  #page-collections section > div > div > div > div:first-child{height:140px !important}
+  .products-grid,.shop-grid,.wishlist-grid{grid-template-columns:repeat(2,1fr);gap:0.7rem}
+  .testimonials-grid,.craft-grid,.values-grid,.reviews-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:1.5rem}
+  .gallery-grid{grid-template-columns:repeat(3,1fr)}
+  .form-row{grid-template-columns:1fr}
+
+  /* Product cards — bigger touch targets */
+  .product-info{padding:0.6rem}
+  .product-name{font-size:0.82rem}
+  .price-current{font-size:0.9rem}
+  .btn-primary[style*="width:100%"]{font-size:0.62rem;padding:0.65rem 0.3rem;letter-spacing:0.06em}
+  .product-wishlist{width:40px;height:40px}
+
+  /* Product detail */
+  .product-detail{grid-template-columns:1fr;gap:1.5rem;padding:1.5rem 1rem}
+  .detail-name{font-size:1.6rem}
+  .action-row{flex-wrap:wrap}
+  .btn-cart,.btn-buy{min-width:0;flex:1}
+  .qty-btn{min-width:44px;min-height:44px}
+
+  /* Cart */
+  .cart-container{grid-template-columns:1fr;gap:1.5rem;padding:1.5rem 1rem}
+  .cart-summary{position:static}
+  .cart-item{padding:1rem;gap:0.8rem}
+  .cart-item-img{width:70px;height:85px}
+
+  /* Checkout */
+  .checkout-grid{grid-template-columns:1fr;padding:1rem}
+  .checkout-section{padding:1.2rem}
+  .cart-summary[style*="sticky"]{position:static}
+
+  /* Contact */
+  .contact-grid{grid-template-columns:1fr;gap:2rem;padding:2rem 1rem}
+
+  /* About */
+  .about-grid{grid-template-columns:1fr}
+  .about-content{padding:2rem 1rem}
+
+  /* Brand story */
+  .brand-story{padding:2rem 1.2rem}
+
+  /* Newsletter */
+  .newsletter{padding:2rem 1rem}
+  .newsletter-form{flex-direction:column}
+  .newsletter-input{border-right:1px solid rgba(201,169,110,0.3);border-bottom:none}
+  .newsletter-btn{padding:0.9rem;min-height:44px}
+
+  /* Footer */
+  footer{padding:2rem 1rem 1rem}
+  .footer-bottom{flex-direction:column;gap:1rem;text-align:center}
+  .footer-policies{justify-content:center;flex-wrap:wrap}
+  .footer-grid{grid-template-columns:1fr;gap:1.5rem}
+
+  /* Shop header */
+  .shop-header{flex-direction:column;align-items:flex-start;gap:1rem;padding:2rem 1rem 1rem}
+  .search-bar{width:100%;min-width:0;box-sizing:border-box;min-height:44px}
+  .filter-bar{padding:0.8rem 1rem;gap:0.4rem;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}
+  .filter-bar::-webkit-scrollbar{height:2px}
+  .filter-bar::-webkit-scrollbar-track{background:transparent}
+  .filter-bar::-webkit-scrollbar-thumb{background:rgba(201,169,110,0.3)}
+  .filter-label{white-space:nowrap;flex-shrink:0}
+  .filter-btn{font-size:0.62rem;padding:0.45rem 0.9rem;white-space:nowrap;flex-shrink:0;min-height:40px}
+
+  /* Collections page */
+  .collection-row-card{grid-template-columns:1fr}
+  .collection-row-img{height:120px}
+  .collection-row-card > div:last-child{padding:1.2rem}
+
+  /* Review summary */
+  .review-summary{grid-template-columns:1fr;gap:1.5rem}
+
+  /* Toast */
+  .toast{right:1rem;left:1rem;max-width:none;bottom:1.5rem}
+
+  /* Checkout banner */
+  .checkout-grid > div:first-child > div[style*="linear-gradient"]{flex-direction:column}
+
+  /* Size table */
+  .size-table{font-size:0.75rem}
+  .size-table th,.size-table td{padding:0.6rem 0.5rem}
+
+  /* Track steps */
+  .track-steps{gap:0}
+  .track-step-label{font-size:0.55rem}
+
+  /* Accordion */
+  .acc-header{font-size:0.7rem;padding:1rem 0}
+
+  /* Mobile menu links bigger tap target */
+  .mobile-menu a{padding:1.2rem 0;font-size:0.85rem}
+}
+</style>
+
+<div id="app">
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="showPage('home')">LUFOSCA</div>
+    <ul class="nav-links">
+      <li><a onclick="showPage('shop')">Shop All</a></li>
+      <li><a onclick="showPage('about')">About</a></li>
+      <li><a onclick="showPage('reviews')">Reviews</a></li>
+      <li><a onclick="showPage('contact')">Contact</a></li>
+    </ul>
+    <div class="nav-icons">
+      <span id="nav-auth-link" style="cursor:pointer;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-right:0.5rem" onclick="showPage('login')">Sign In</span>
+      <button class="nav-icon" onclick="showPage('wishlist')" title="Wishlist">♡</button>
+      <button class="nav-icon" onclick="showPage('cart');renderCart()" title="Cart">
+        ⊡
+        <span class="cart-count" id="cart-count">0</span>
+      </button>
+      <button class="hamburger" onclick="toggleMobileMenu()" id="hamburger" title="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <a onclick="showPage('shop')">Shop All</a>
+  <a onclick="showPage('about')">About</a>
+  <a onclick="showPage('reviews')">Reviews</a>
+  <a onclick="showPage('contact')">Contact</a>
+  <a onclick="showPage('faq')">FAQ</a>
+  <a onclick="showPage('track')">Track Order</a>
+  <a id="mobile-auth-link" onclick="showPage('login')">Sign In</a>
+  <div class="mobile-menu-actions">
+    <a href="https://www.instagram.com/lufosca._.jewels?igsh=M2ZyOWNzM3oxa2F2" target="_blank"
+      style="border:1px solid rgba(201,169,110,0.4);color:var(--gold)">◈ Instagram</a>
+    <a href="https://wa.me/923258639241" target="_blank"
+      style="border:1px solid rgba(100,200,100,0.4);color:#8FD48A">✆ WhatsApp</a>
+  </div>
+</div>
+
+<!-- HOME PAGE -->
+<div class="page active" id="page-home">
+  <!-- ============================================================
+       VIDEO HERO — HOW TO ADD YOUR VIDEO:
+       Option A (MP4 file): Replace YOUR_VIDEO.mp4 below with your
+         video file name. Put the video in the same folder as this
+         HTML file and it will play automatically.
+       Option B (URL): Replace YOUR_VIDEO.mp4 with a full URL like
+         https://your-cdn.com/lufosca-hero.mp4
+       The video plays muted, looped, and auto-starts (required by
+       browsers). You can keep the placeholder as fallback.
+  ============================================================ -->
+  <div class="video-hero">
+    <!-- PLACEHOLDER shown until you add your video -->
+    <div class="video-placeholder" id="video-placeholder">
+      <div class="video-placeholder-icon">◈</div>
+      <div class="video-placeholder-text">Add your brand video here</div>
+    </div>
+
+    <!-- YOUR VIDEO — uncomment & replace src once you have your file -->
+    <!-- <video class="video-bg" id="hero-video" autoplay muted loop playsinline preload="auto"
+      src="YOUR_VIDEO.mp4"
+      poster="YOUR_THUMBNAIL.jpg">
+    </video> -->
+
+    <div class="video-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-subtitle">✦ Handcrafted with Devotion ✦</div>
+      <h1 class="hero-title">Where Handmade Beads<br>Become <em>Luxury</em> Statements</h1>
+      <p class="hero-desc">Each LUFOSCA piece is an act of artistry — beaded, pearl, and crystal jewelry crafted for the woman who wears elegance as her second skin.</p>
+      <div>
+        <button class="btn-primary" onclick="showPage('shop')">Shop New Arrivals</button>
+        <button class="btn-secondary" onclick="showPage('shop')">Explore Collections</button>
+        <div style="margin-top:1.2rem;font-size:0.7rem;color:var(--muted);letter-spacing:0.08em">
+          Order via
+          <a href="https://www.instagram.com/lufosca._.jewels?igsh=M2ZyOWNzM3oxa2F2" target="_blank" style="color:var(--gold);text-decoration:none;margin:0 4px">Instagram</a>
+          or
+          <a href="https://wa.me/923258639241" target="_blank" style="color:#8FD48A;text-decoration:none;margin-left:4px">WhatsApp 0325-8639241</a>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </div>
+
+  <!-- FEATURED COLLECTIONS -->
+  <section>
+    <div class="section-label">✦ Curated for You</div>
+    <h2 class="section-title">Our <em>Collections</em></h2>
+    <div class="divider"></div>
+    <div class="collections-grid">
+      <div class="collection-card" onclick="showPage('shop')">
+        <div class="collection-img" style="height:260px;background:linear-gradient(135deg,#1a1428,#2d1f4a,#1a1428);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:5rem;color:rgba(155,111,208,0.3)">◈</div>
+        <div class="collection-overlay">
+          <div class="collection-tag"><span class="col-gem"></span>Featured</div>
+          <div class="collection-name">Crystal Reverie</div>
+          <div class="collection-count">24 Pieces · Amethyst & Crystal</div>
+        </div>
+      </div>
+      <div class="collection-card" onclick="showPage('shop')">
+        <div class="collection-img" style="height:260px;background:linear-gradient(135deg,#1c1810,#2e2410,#1c1810);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:5rem;color:rgba(201,169,110,0.25)">✦</div>
+        <div class="collection-overlay">
+          <div class="collection-tag"><span class="col-gem"></span>New Arrival</div>
+          <div class="collection-name">Pearl Lumière</div>
+          <div class="collection-count">18 Pieces · Fresh Water Pearls</div>
+        </div>
+      </div>
+      <div class="collection-card" onclick="showPage('shop')">
+        <div class="collection-img" style="height:220px;background:linear-gradient(135deg,#14181c,#1c2430,#14181c);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:5rem;color:rgba(100,140,200,0.25)">⬡</div>
+        <div class="collection-overlay">
+          <div class="collection-tag"><span class="col-gem"></span>Bestseller</div>
+          <div class="collection-name">Midnight Beads</div>
+          <div class="collection-count">32 Pieces · Beaded Elegance</div>
+        </div>
+      </div>
+      <div class="collection-card" onclick="showPage('shop')">
+        <div class="collection-img" style="height:220px;background:linear-gradient(135deg,#1a1020,#2a1535,#1a1020);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:5rem;color:rgba(180,100,180,0.25)">❋</div>
+        <div class="collection-overlay">
+          <div class="collection-tag"><span class="col-gem"></span>Limited</div>
+          <div class="collection-name">Velvet Heirlooms</div>
+          <div class="collection-count">12 Pieces · Rare & Exclusive</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BEST SELLERS -->
+  <section style="padding-top:1rem">
+    <div class="section-label">✦ Most Loved</div>
+    <h2 class="section-title">Best <em>Sellers</em></h2>
+    <div class="divider"></div>
+    <div class="products-grid">
+      ${productCardsHTML()}
+    </div>
+    <div style="text-align:center;margin-top:3rem">
+      <button class="btn-primary" onclick="showPage('shop')">Discover Best Sellers</button>
+    </div>
+  </section>
+
+  <!-- BRAND STORY -->
+  <section style="padding-top:1rem">
+    <div class="brand-story">
+      <div class="brand-story-inner">
+        <div class="section-label">✦ Our Story</div>
+        <h2 class="section-title">Crafted <em>Whispers</em><br>of Eternal Elegance</h2>
+        <div class="divider"></div>
+        <p>LUFOSCA was born from a singular obsession: <strong>that every woman deserves to wear something handmade, something that carries intention in every bead.</strong></p>
+        <p>Each piece begins as a vision — a color, a texture, a feeling. Our artisans thread each crystal, pearl, and gemstone by hand, building jewelry that is as much a story as it is an adornment.</p>
+        <p>From the first bead to the final clasp, <strong>LUFOSCA is a love letter to craftsmanship, femininity, and timeless beauty.</strong></p>
+        <div style="margin-top:2rem">
+          <button class="btn-primary" onclick="showPage('about')">Discover Our Story</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CRAFTSMANSHIP -->
+  <section style="padding-top:1rem">
+    <div class="section-label" style="text-align:center">✦ Why LUFOSCA</div>
+    <h2 class="section-title" style="text-align:center">The Art of <em>Craftsmanship</em></h2>
+    <div class="divider" style="margin:1.5rem auto"></div>
+    <div class="craft-grid">
+      <div class="craft-item">
+        <div class="craft-icon">◈</div>
+        <div class="craft-title">Handpicked Materials</div>
+        <div class="craft-desc">Only the finest freshwater pearls, Swarovski crystals, and semi-precious gemstones make it into each piece.</div>
+      </div>
+      <div class="craft-item">
+        <div class="craft-icon">✦</div>
+        <div class="craft-title">Handmade with Care</div>
+        <div class="craft-desc">Every bracelet, necklace, and earring is assembled by hand — no machines, no shortcuts, only devotion.</div>
+      </div>
+      <div class="craft-item">
+        <div class="craft-icon">❋</div>
+        <div class="craft-title">Timeless by Design</div>
+        <div class="craft-desc">LUFOSCA pieces are made to be worn for years — through seasons, occasions, and a lifetime of moments.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEW ARRIVALS -->
+  <section style="padding-top:1rem">
+    <div class="section-label">✦ Just Arrived</div>
+    <h2 class="section-title">New <em>Arrivals</em></h2>
+    <div class="divider"></div>
+    <div class="products-grid">
+      ${newArrivalsHTML()}
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section style="padding-top:1rem">
+    <div class="section-label" style="text-align:center">✦ Our Community</div>
+    <h2 class="section-title" style="text-align:center">She <em>Speaks</em></h2>
+    <div class="divider" style="margin:1.5rem auto"></div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <div class="testimonial-text">"The Moon Pearl Set is everything. Delicate, luminous, and utterly unforgettable. I've never received so many compliments."</div>
+        <div class="testimonial-author"><span class="gem-dot"></span>Ayla R. — Lahore</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <div class="testimonial-text">"LUFOSCA jewelry is not just an accessory — it's a feeling. The Crystal Reverie bracelet makes me feel powerful every time I wear it."</div>
+        <div class="testimonial-author"><span class="gem-dot"></span>Misha T. — Karachi</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <div class="testimonial-text">"Handmade quality that shows in every single bead. My order arrived beautifully packaged, like a luxury gift to myself."</div>
+        <div class="testimonial-author"><span class="gem-dot"></span>Sana K. — Islamabad</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:2.5rem">
+      <button class="btn-secondary" onclick="showPage('reviews')">Read All Reviews</button>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section style="padding-top:1rem">
+    <div class="section-label" style="text-align:center">✦ @lufosca</div>
+    <h2 class="section-title" style="text-align:center">As Seen On <em>Instagram</em></h2>
+    <div class="divider" style="margin:1.5rem auto"></div>
+    <div class="gallery-grid">
+      ${[['◈','#1a1428'],['✦','#1c1810'],['❋','#1a1020'],['⬡','#14181c'],['◇','#1a1428'],['✧','#1c1810'],['◈','#14181c'],['❋','#1a1020'],['✦','#1c1810'],['◇','#1a1428']].map(([e,bg])=>`<div class="gallery-item"><div class="gallery-emoji" style="background:${bg}">${e}</div></div>`).join('')}
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section style="padding-top:1rem">
+    <div class="newsletter">
+      <div class="section-label" style="text-align:center">✦ Join the Circle</div>
+      <div class="newsletter-title">First to Know. First to Shine.</div>
+      <div class="newsletter-desc">New arrivals, exclusive offers, and styling secrets — delivered to your inbox with love.</div>
+      <div class="newsletter-form">
+        <input class="newsletter-input" placeholder="Your email address" type="email">
+        <button class="newsletter-btn" onclick="showToast('Welcome to the LUFOSCA circle ✦')">Subscribe</button>
+      </div>
+    </div>
+  </section>
+
+  ${renderFooter()}
+</div>
+
+<!-- SHOP PAGE -->
+<div class="page" id="page-shop">
+  <div class="shop-header">
+    <div>
+      <div class="section-label">✦ Explore</div>
+      <h2 class="section-title">Shop <em>All</em></h2>
+    </div>
+    <input class="search-bar" placeholder="Search jewelry..." oninput="filterProducts(this.value)">
+  </div>
+  <div class="filter-bar">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" onclick="setFilter(this,'all')">All</button>
+    <button class="filter-btn" onclick="setFilter(this,'bracelets')">Bracelets</button>
+    <button class="filter-btn" onclick="setFilter(this,'necklaces')">Necklaces</button>
+    <button class="filter-btn" onclick="setFilter(this,'earrings')">Earrings</button>
+    <button class="filter-btn" onclick="setFilter(this,'sets')">Sets</button>
+    <span class="filter-label" style="margin-left:1rem">Price:</span>
+    <button class="filter-btn" onclick="setFilter(this,'under2000')">Under Rs. 2,000</button>
+    <button class="filter-btn" onclick="setFilter(this,'under5000')">Under Rs. 5,000</button>
+    <span class="filter-label" style="margin-left:1rem">Sort:</span>
+    <button class="filter-btn" onclick="setFilter(this,'new')">Newest</button>
+    <button class="filter-btn" onclick="setFilter(this,'popular')">Popular</button>
+  </div>
+  <div class="shop-grid" id="shop-grid">
+    ${allProductsHTML()}
+  </div>
+  ${renderFooter()}
+</div>
+
+<!-- COLLECTIONS PAGE -->
+<div class="page" id="page-collections">
+  <div class="page-header">
+    <div class="page-header-sub">✦ Curated for You</div>
+    <h1 class="page-header-title">Our <em style="font-style:italic;color:var(--gold)">Collections</em></h1>
+  </div>
+  <section>
+    ${collectionsHTML()}
+  </section>
+  ${renderFooter()}
+</div>
+
+<!-- PRODUCT DETAIL PAGE -->
+<div class="page" id="page-product">
+  <div class="product-detail">
+    <div class="product-images">
+      <div class="main-image" id="main-product-img">◈</div>
+      <div class="thumb-row">
+        <div class="thumb active">◈</div>
+        <div class="thumb">✦</div>
+        <div class="thumb">❋</div>
+        <div class="thumb">◇</div>
+      </div>
+    </div>
+    <div class="product-detail-info">
+      <div class="breadcrumb">Shop All <span>›</span> Bracelets <span>›</span> Crystal Reverie</div>
+      <h1 class="detail-name">Amethyst Dream Bracelet</h1>
+      <div class="detail-material">Crystal · Beaded · Handmade</div>
+      <div class="rating-row">
+        <div class="rating-stars">★★★★★</div>
+        <div class="rating-count">(47 reviews)</div>
+      </div>
+      <div>
+        <span class="detail-price">Rs. 3,200</span>
+        <span class="detail-price-old">Rs. 4,500</span>
+      </div>
+      <div class="stock-status">✓ In Stock — Only 5 Left</div>
+      <div class="color-label">Color — <span style="color:var(--cream)">Amethyst Purple</span></div>
+      <div class="color-swatches">
+        <div class="swatch active" onclick="selectSwatch(this)"><div class="swatch-inner" style="background:#6B3FA0"></div></div>
+        <div class="swatch" onclick="selectSwatch(this)"><div class="swatch-inner" style="background:#C9A96E"></div></div>
+        <div class="swatch" onclick="selectSwatch(this)"><div class="swatch-inner" style="background:#1a3a5c"></div></div>
+        <div class="swatch" onclick="selectSwatch(this)"><div class="swatch-inner" style="background:#2d2d2d"></div></div>
+      </div>
+      <div class="qty-row">
+        <button class="qty-btn" onclick="changeQty(-1)">−</button>
+        <span class="qty-val" id="qty-val">1</span>
+        <button class="qty-btn" onclick="changeQty(1)">+</button>
+        <span style="font-size:0.72rem;color:var(--muted);margin-left:0.5rem">pieces</span>
+      </div>
+      <div class="action-row">
+        <button class="btn-cart" onclick="addToCart('Amethyst Dream Bracelet')">Add to Cart</button>
+        <button class="btn-buy" onclick="addToCart('Amethyst Dream Bracelet');goToCheckout()">Buy Now</button>
+        <button class="btn-wish" id="detail-wish" onclick="toggleDetailWish()">♡</button>
+      </div>
+      <div class="detail-accordion">
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <span>Description & Materials</span><span class="faq-toggle">+</span>
+          </div>
+          <div class="acc-body">The Amethyst Dream Bracelet is handcrafted using premium Czech glass beads and genuine amethyst chips. Each bead is individually threaded onto high-grade elastic cord, finished with a gold-tone clasp. Approx. 7 inches. Adjustable.</div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <span>Care Instructions</span><span class="faq-toggle">+</span>
+          </div>
+          <div class="acc-body">Store in the provided LUFOSCA pouch away from moisture. Avoid contact with perfume and lotions. Wipe gently with a soft cloth after wear. Do not submerge in water.</div>
+        </div>
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <span>Shipping & Returns</span><span class="faq-toggle">+</span>
+          </div>
+          <div class="acc-body">Free shipping across Pakistan on orders over Rs. 3,000. Delivery in 3–5 business days. Returns accepted within 7 days in original, unworn condition. See our full Returns Policy for details.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section style="padding-top:1rem">
+    <div class="section-label">✦ You May Also Love</div>
+    <h2 class="section-title">Related <em>Pieces</em></h2>
+    <div class="divider"></div>
+    <div class="products-grid">
+      ${productCardsHTML()}
+    </div>
+  </section>
+  ${renderFooter()}
+</div>
+
+<!-- ABOUT PAGE -->
+<div class="page" id="page-about">
+  <div class="about-hero">
+    <div>
+      <div class="section-label" style="text-align:center">✦ Our Identity</div>
+      <h1 class="section-title" style="text-align:center;font-size:3rem">About <em>LUFOSCA</em></h1>
+    </div>
+  </div>
+  <div class="about-content">
+    <div class="about-grid">
+      <div class="about-img-block">L</div>
+      <div class="about-text">
+        <div class="section-label">✦ The Beginning</div>
+        <h2 class="section-title" style="font-size:2rem">Born from a<br><em>Vision of Beauty</em></h2>
+        <div class="divider"></div>
+        <p>LUFOSCA was founded with one belief: that handmade jewelry should feel as luxurious as fine jewelry from any boutique in the world.</p>
+        <p>Every collection is designed around a feeling — the warmth of pearls at dusk, the coolness of crystals under moonlight, the quiet confidence of a beaded bracelet on a wrist that knows its worth.</p>
+        <p>We create for women who are intentional about what they wear, who choose meaning over mass production, and who believe that beauty is found in the details.</p>
+      </div>
+    </div>
+    <div class="values-grid">
+      <div class="value-item"><div class="value-num">01</div><div class="value-title">Handmade Always</div><div class="value-desc">Every piece is made by hand. No factories, no shortcuts — only patient, skilled artistry.</div></div>
+      <div class="value-item"><div class="value-num">02</div><div class="value-title">Premium Materials</div><div class="value-desc">We source only the finest crystals, pearls, and gemstones for pieces that last a lifetime.</div></div>
+      <div class="value-item"><div class="value-num">03</div><div class="value-title">Feminine by Design</div><div class="value-desc">Our aesthetic is unapologetically feminine — refined, graceful, and deeply personal.</div></div>
+      <div class="value-item"><div class="value-num">04</div><div class="value-title">Crafted with Love</div><div class="value-desc">Each LUFOSCA piece carries the energy of the hands that made it — and the heart behind them.</div></div>
+    </div>
+  </div>
+  ${renderFooter()}
+</div>
+
+<!-- REVIEWS PAGE -->
+<div class="page" id="page-reviews">
+  <div class="page-header">
+    <div class="page-header-sub">✦ Our Community</div>
+    <h1 class="page-header-title">Customer <em style="font-style:italic;color:var(--gold)">Reviews</em></h1>
+  </div>
+  <div class="reviews-section">
+    <div class="review-summary">
+      <div class="big-rating">
+        <div class="big-num">4.9</div>
+        <div class="big-stars">★★★★★</div>
+        <div class="big-count">based on 214 reviews</div>
+      </div>
+      <div>
+        <div class="rating-bars">
+          ${[[5,'92'],[4,'6'],[3,'1'],[2,'1'],[1,'0']].map(([n,pct])=>`
+          <div class="rating-bar-row">
+            <span>${n} stars</span>
+            <div class="rating-bar-track"><div class="rating-bar-fill" style="width:${pct}%"></div></div>
+            <span>${pct}%</span>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+    <div class="reviews-grid">
+      ${reviewsHTML()}
+    </div>
+  </div>
+  ${renderFooter()}
+</div>
+
+<!-- FAQ PAGE -->
+<div class="page" id="page-faq">
+  <div class="page-header">
+    <div class="page-header-sub">✦ Questions & Answers</div>
+    <h1 class="page-header-title">Frequently Asked <em style="font-style:italic;color:var(--gold)">Questions</em></h1>
+  </div>
+  <div class="faq-section">
+    ${faqHTML()}
+  </div>
+  ${renderFooter()}
+</div>
+
+<!-- CONTACT PAGE -->
+<div class="page" id="page-contact">
+  <div class="page-header">
+    <div class="page-header-sub">✦ Reach Out</div>
+    <h1 class="page-header-title">Contact <em style="font-style:italic;color:var(--gold)">LUFOSCA</em></h1>
+  </div>
+  <div class="contact-grid">
+    <div>
+      <div class="section-label" style="margin-bottom:2rem">✦ Get in Touch</div>
+      <div class="contact-info-item">
+        <div class="contact-icon">✉</div>
+        <div><div class="contact-info-label">Email Us</div><div class="contact-info-val">lufoscajewels@gmail.com</div></div>
+      </div>
+      <div class="contact-info-item">
+        <div class="contact-icon">☏</div>
+        <div><div class="contact-info-label">WhatsApp / Call</div><div class="contact-info-val">0325-8639241<br>Available 10am – 8pm PKT</div></div>
+      </div>
+      <div class="contact-info-item">
+        <div class="contact-icon">◈</div>
+        <div><div class="contact-info-label">Instagram</div><div class="contact-info-val">@lufosca<br>DM for fastest response</div></div>
+      </div>
+      <div class="contact-info-item">
+        <div class="contact-icon">⧗</div>
+        <div><div class="contact-info-label">Response Time</div><div class="contact-info-val">We reply within 24 hours.<br>Orders confirmed via WhatsApp.</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="section-label" style="margin-bottom:1.5rem">✦ Send a Message</div>
+      <div class="form-field"><label class="form-label">Your Name</label><input class="form-input" id="contact-name" placeholder="e.g. Ayla Rahman"></div>
+      <div class="form-field"><label class="form-label">Email Address</label><input class="form-input" id="contact-email" type="email" placeholder="your@email.com"></div>
+      <div class="form-field"><label class="form-label">Subject</label>
+        <select class="form-input" id="contact-subject" style="cursor:pointer">
+          <option>Order Inquiry</option><option>Custom Order</option><option>General Question</option><option>Returns & Exchange</option>
+        </select>
+      </div>
+      <div class="form-field"><label class="form-label">Message</label><textarea class="form-input form-textarea" id="contact-message" placeholder="Tell us how we can help..."></textarea></div>
+      <button class="btn-primary" style="width:100%;text-align:center" onclick="sendContactEmail()">Send Message</button>
+    </div>
+  </div>
+  ${renderFooter()}
+</div>
+
+<!-- CART PAGE -->
+<div class="page" id="page-cart">
+  <div class="page-header">
+    <div class="page-header-sub">✦ Your Selections</div>
+    <h1 class="page-header-title">Your <em style="font-style:italic;color:var(--gold)">Cart</em></h1>
+  </div>
+  <div class="cart-container">
+    <div>
+      <div class="cart-items" id="cart-items">
+        <!-- Filled dynamically by renderCart() -->
+      </div>
+    </div>
+    <div class="cart-summary">
+      <div class="summary-title">Order Summary</div>
+      <div id="cart-summary-lines"></div>
+      <div class="summary-row"><span>Shipping</span><span style="color:#8FD48A">Free</span></div>
+      <div class="summary-row"><span>Discount</span><span>—</span></div>
+      <div class="coupon-row">
+        <input class="coupon-input" placeholder="Coupon code">
+        <button class="coupon-btn" onclick="showToast('Code applied successfully ✦')">Apply</button>
+      </div>
+      <div class="summary-total"><span>Total</span><span id="cart-total-display">Rs. 0</span></div>
+      <button class="checkout-btn" onclick="goToCheckout()">Proceed to Checkout</button>
+      <div style="text-align:center;margin-top:1rem">
+        <button class="btn-secondary" style="font-size:0.65rem;padding:0.5rem 1.2rem" onclick="showPage('shop')">Continue Shopping</button>
+      </div>
+    </div>
+  </div>
+  ${renderFooter()}
+</div>
+
+<!-- CHECKOUT PAGE -->
+<div class="page" id="page-checkout">
+  <div class="page-header">
+    <div class="page-header-sub">✦ Secure Checkout</div>
+    <h1 class="page-header-title">Complete Your <em style="font-style:italic;color:var(--gold)">Order</em></h1>
+  </div>
+
+  <!-- HOW TO ORDER BANNER -->
+  <div style="max-width:1200px;margin:2rem auto 0;padding:0 2rem">
+    <div style="background:linear-gradient(135deg,rgba(201,169,110,0.08),rgba(107,63,160,0.08));border:1px solid rgba(201,169,110,0.25);padding:2rem 2.5rem;display:flex;flex-wrap:wrap;gap:2rem;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem">✦ How to Place Your Order</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--cream);margin-bottom:0.5rem">Order via Instagram or WhatsApp</div>
+        <div style="font-size:0.82rem;color:var(--muted);line-height:1.8;max-width:500px">
+          Fill in your details below, then tap <strong style="color:var(--cream)">"Send Order on WhatsApp"</strong> — your full order will be sent directly to us. Or DM us on Instagram and we'll confirm within a few hours.
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0.8rem;min-width:200px">
+        <a href="https://www.instagram.com/lufosca._.jewels?igsh=M2ZyOWNzM3oxa2F2" target="_blank"
+          style="display:flex;align-items:center;gap:0.8rem;padding:0.8rem 1.2rem;border:1px solid rgba(201,169,110,0.4);color:var(--gold);text-decoration:none;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;transition:all 0.3s;background:transparent"
+          onmouseover="this.style.background='rgba(201,169,110,0.1)'" onmouseout="this.style.background='transparent'">
+          <span style="font-size:1.1rem">◈</span> Order on Instagram
+        </a>
+        <a href="https://wa.me/923258639241" target="_blank"
+          style="display:flex;align-items:center;gap:0.8rem;padding:0.8rem 1.2rem;border:1px solid rgba(100,200,100,0.4);color:#8FD48A;text-decoration:none;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;transition:all 0.3s;background:transparent"
+          onmouseover="this.style.background='rgba(100,200,100,0.08)'" onmouseout="this.style.background='transparent'">
+          <span style="font-size:1.1rem">✆</span> Chat on WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="checkout-grid">
+    <div class="checkout-form">
+      <div class="checkout-section">
+        <div class="checkout-section-title">Your Details</div>
+        <div class="form-row">
+          <div class="form-field"><label class="form-label">First Name</label><input class="form-input" id="co-fname" placeholder="e.g. Ayla"></div>
+          <div class="form-field"><label class="form-label">Last Name</label><input class="form-input" id="co-lname" placeholder="e.g. Rahman"></div>
+        </div>
+        <div class="form-field"><label class="form-label">Phone (WhatsApp)</label><input class="form-input" id="co-phone" type="tel" placeholder="+92 300 0000000"></div>
+      </div>
+      <div class="checkout-section">
+        <div class="checkout-section-title">Shipping Address</div>
+        <div class="form-field"><label class="form-label">Address</label><input class="form-input" id="co-addr" placeholder="Street, House No."></div>
+        <div class="form-row">
+          <div class="form-field"><label class="form-label">City</label><input class="form-input" id="co-city" placeholder="e.g. Lahore"></div>
+          <div class="form-field"><label class="form-label">Province</label><select class="form-input" id="co-province"><option>Punjab</option><option>Sindh</option><option>KPK</option><option>Balochistan</option></select></div>
+        </div>
+      </div>
+      <div class="checkout-section">
+        <div class="checkout-section-title">Payment Method</div>
+        <div class="payment-option active" onclick="selectPayment(this,'cod')" id="pay-cod">
+          <div class="payment-radio"><div class="payment-radio-dot"></div></div>
+          <div class="payment-label">Cash on Delivery (COD)</div>
+        </div>
+        <div class="payment-option" onclick="selectPayment(this,'jazz')" id="pay-jazz">
+          <div class="payment-radio"><div class="payment-radio-dot" style="display:none"></div></div>
+          <div style="flex:1">
+            <div class="payment-label">JazzCash</div>
+            <div id="jazz-details" style="display:none;margin-top:0.7rem;background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.15);padding:0.9rem;font-size:0.78rem;line-height:1.9;color:var(--muted)">
+              Send payment to:<br>
+              <span style="color:var(--gold);font-size:0.9rem;letter-spacing:0.05em">0325-8639241</span><br>
+              Account Name: <span style="color:var(--cream)">Qasim Ali</span><br>
+              <span style="color:var(--muted);font-size:0.72rem">After sending, share screenshot on WhatsApp to confirm your order.</span>
+            </div>
+          </div>
+        </div>
+        <div class="payment-option" onclick="selectPayment(this,'easy')" id="pay-easy">
+          <div class="payment-radio"><div class="payment-radio-dot" style="display:none"></div></div>
+          <div style="flex:1">
+            <div class="payment-label">EasyPaisa</div>
+            <div id="easy-details" style="display:none;margin-top:0.7rem;background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.15);padding:0.9rem;font-size:0.78rem;line-height:1.9;color:var(--muted)">
+              Send payment to:<br>
+              <span style="color:var(--gold);font-size:0.9rem;letter-spacing:0.05em">0325-8639241</span><br>
+              Account Name: <span style="color:var(--cream)">Qasim Ali</span><br>
+              <span style="color:var(--muted);font-size:0.72rem">After sending, share screenshot on WhatsApp to confirm your order.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cart-summary" style="position:sticky;top:90px">
+      <div class="summary-title">Order Summary</div>
+      <div id="checkout-cart-lines" style="border-bottom:1px solid rgba(201,169,110,0.1);padding-bottom:1rem;margin-bottom:1rem"></div>
+      <div class="summary-row"><span>Subtotal</span><span id="checkout-subtotal">Rs. 0</span></div>
+      <div class="summary-row"><span>Shipping</span><span style="color:#8FD48A">Free</span></div>
+      <div class="summary-total"><span>Total</span><span id="checkout-total">Rs. 0</span></div>
+      <button class="checkout-btn" onclick="placeOrder()" style="background:var(--gold);display:flex;align-items:center;justify-content:center;gap:0.6rem">
+        <span style="font-size:1rem">✆</span> Send Order on WhatsApp
+      </button>
+      <a href="https://www.instagram.com/lufosca._.jewels?igsh=M2ZyOWNzM3oxa2F2" target="_blank"
+        style="display:flex;align-items:center;justify-content:center;gap:0.6rem;margin-top:0.8rem;padding:0.9rem;border:1px solid rgba(201,169,110,0.35);color:var(--gold);text-decoration:none;font-family:'Jost',sans-serif;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;transition:all 0.3s"
+        onmouseover="this.style.background='rgba(201,169,110,0.08)'" onmouseout="this.style.background='transparent'">
+        <span style="font-size:1rem">◈</span> Order via Instagram
+      </a>
+      <div style="text-align:center;margin-top:1rem;font-size:0.68rem;color:var(--muted);letter-spacing:0.05em">We confirm all orders via WhatsApp ✦</div>
+    </div>
+  </div>
+  ${renderFooter()}
+</div>
+
+<!-- WISHLIST PAGE -->
+<div class="page" id="page-wishlist">
+  <div class="page-header">
+    <div class="page-header-sub">✦ Your Favorites</div>
+    <h1 class="page-header-title">Your <em style="font-style:italic;color:var(--gold)">Wishlist</em></h1>
+  </div>
+  <div class="wishlist-section">
+    <div class="wishlist-grid">
+      ${wishlistHTML()}
+    </div>
+  </div>
+  ${renderFooter()}
+</div>
+
+<!-- TRACK ORDER PAGE -->
+<div class="page" id="page-track">
+  <div class="page-header">
+    <div class="page-header-sub">✦ Your Journey</div>
+    <h1 class="page-header-title">Track Your <em style="font-style:italic;color:var(--gold)">Order</em></h1>
+  </div>
+  <div class="track-section">
+    <div style="margin-bottom:2rem">
+      <div class="form-field"><label class="form-label">Order Number or Phone Number</label>
+        <div style="display:flex;gap:0">
+          <input class="form-input" style="border-right:none" placeholder="e.g. LUF-20240512" id="track-input">
+          <button class="newsletter-btn" onclick="trackOrder()">Track</button>
+        </div>
+      </div>
+    </div>
+    <div id="track-result" style="display:none">
+      <div style="background:var(--surface);border:1px solid rgba(201,169,110,0.1);padding:2rem;margin-bottom:2rem">
+        <div style="display:flex;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:1rem">
+          <div><div style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Order Number</div><div style="font-family:var(--serif);font-size:1.1rem;color:var(--cream)">LUF-20240512</div></div>
+          <div><div style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Estimated Delivery</div><div style="font-family:var(--serif);font-size:1.1rem;color:var(--cream)">May 7, 2026</div></div>
+          <div><div style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Status</div><div style="font-size:0.85rem;color:#8FD48A">In Transit</div></div>
+        </div>
+      </div>
+      <div class="track-steps">
+        <div class="track-step done"><div class="track-step-dot">✓</div><div class="track-step-label">Order<br>Confirmed</div></div>
+        <div class="track-step done"><div class="track-step-dot">✓</div><div class="track-step-label">Being<br>Crafted</div></div>
+        <div class="track-step active"><div class="track-step-dot">◈</div><div class="track-step-label">In<br>Transit</div></div>
+        <div class="track-step"><div class="track-step-dot">4</div><div class="track-step-label">Out for<br>Delivery</div></div>
+        <div class="track-step"><div class="track-step-dot">5</div><div class="track-step-label">Delivered</div></div>
+      </div>
+    </div>
+  </div>
+  ${renderFooter()}
+</div>
+
+<!-- SIZE GUIDE PAGE -->
+<div class="page" id="page-size">
+  <div class="page-header">
+    <div class="page-header-sub">✦ Find Your Fit</div>
+    <h1 class="page-header-title">Size <em style="font-style:italic;color:var(--gold)">Guide</em></h1>
+  </div>
+  <div class="about-content">
+    <div class="section-label">✦ Bracelet Sizes</div>
+    <p style="font-size:0.85rem;color:var(--muted);line-height:1.9;margin:1rem 0">To find your size, measure your wrist with a soft tape measure or a strip of paper. Add 0.5–1 inch for comfort. Most LUFOSCA bracelets are elastic and fit sizes 6–7.5 inches comfortably.</p>
+    <table class="size-table">
+      <tr><th>Size</th><th>Wrist Circumference</th><th>Bracelet Length</th><th>Best For</th></tr>
+      <tr><td>XS</td><td>5.5 – 6 inches</td><td>6.5 inches</td><td>Petite wrists</td></tr>
+      <tr><td>S / M</td><td>6 – 6.75 inches</td><td>7 inches</td><td>Most common</td></tr>
+      <tr><td>M / L</td><td>6.75 – 7.5 inches</td><td>7.5 inches</td><td>Wider wrists</td></tr>
+      <tr><td>L / XL</td><td>7.5 – 8+ inches</td><td>8 inches</td><td>Custom sizing</td></tr>
+    </table>
+    <div class="section-label" style="margin-top:2.5rem">✦ Necklace Lengths</div>
+    <table class="size-table" style="margin-top:1rem">
+      <tr><th>Length</th><th>Style</th><th>Sits At</th></tr>
+      <tr><td>14 inches</td><td>Choker</td><td>Base of throat</td></tr>
+      <tr><td>16 inches</td><td>Collar</td><td>Collarbone</td></tr>
+      <tr><td>18 inches</td><td>Princess</td><td>Just below collarbone</td></tr>
+      <tr><td>20–24 inches</td><td>Matinee</td><td>Above bust</td></tr>
+    </table>
+    <p style="font-size:0.78rem;color:var(--muted);margin-top:2rem">Need custom sizing? <span style="color:var(--gold);cursor:pointer" onclick="showPage('contact')">Contact us</span> — we happily make bespoke pieces.</p>
+  </div>
+  ${renderFooter()}
+</div>
+
+<!-- SHIPPING & RETURNS PAGE -->
+<div class="page" id="page-shipping">
+  <div class="page-header">
+    <div class="page-header-sub">✦ Our Policies</div>
+    <h1 class="page-header-title">Shipping <em style="font-style:italic;color:var(--gold)">&amp; Returns</em></h1>
+  </div>
+  <div class="policy-content">
+    <h2>Shipping Policy</h2>
+    <p>LUFOSCA ships across Pakistan via trusted courier services. Orders are dispatched within 1–2 business days of confirmation.</p>
+    <p><strong style="color:var(--cream);font-weight:400">Free Shipping</strong> on all orders over Rs. 3,000. Standard delivery takes 3–5 business days. Express delivery (1–2 days) is available at checkout for an additional fee.</p>
+    <p>All orders are confirmed via WhatsApp before dispatch. You will receive a tracking number once your package is on its way.</p>
+    <h2>Returns Policy</h2>
+    <p>We want you to love every LUFOSCA piece. If you're not satisfied, we accept returns within 7 days of delivery — provided items are unworn, undamaged, and in original packaging.</p>
+    <p>To initiate a return, contact us at hello@lufosca.com or DM us on Instagram with your order number and reason for return.</p>
+    <p>Custom and personalized orders are non-refundable. Sale items may only be exchanged.</p>
+    <h2>Exchanges</h2>
+    <p>Exchanges are processed within 3–5 days of receiving your returned item. Shipping costs for exchanges are covered by LUFOSCA on the first exchange per order.</p>
+  </div>
+  ${renderFooter()}
+</div>
+
+<!-- PRIVACY POLICY PAGE -->
+<div class="page" id="page-privacy">
+  <div class="page-header">
+    <div class="page-header-sub">✦ Your Privacy</div>
+    <h1 class="page-header-title">Privacy <em style="font-style:italic;color:var(--gold)">Policy</em></h1>
+  </div>
+  <div class="policy-content">
+    <p style="color:var(--muted);font-size:0.78rem">Last updated: May 2026</p>
+    <h2>Information We Collect</h2>
+    <p>When you place an order, we collect your name, contact number, email address, and delivery address. This information is used solely to process and deliver your order.</p>
+    <h2>How We Use Your Information</h2>
+    <p>Your information is used to confirm orders, arrange delivery, and communicate updates. We do not sell, rent, or share your personal data with third parties for marketing purposes.</p>
+    <h2>WhatsApp & Communication</h2>
+    <p>Order confirmations and updates are sent via WhatsApp. By providing your number, you consent to receiving order-related messages from LUFOSCA.</p>
+    <h2>Data Security</h2>
+    <p>We take data security seriously and implement appropriate measures to protect your personal information from unauthorized access.</p>
+    <h2>Contact</h2>
+    <p>For privacy-related questions, contact us at hello@lufosca.com.</p>
+  </div>
+  ${renderFooter()}
+</div>
+
+<!-- TERMS PAGE -->
+<div class="page" id="page-terms">
+  <div class="page-header">
+    <div class="page-header-sub">✦ Legal</div>
+    <h1 class="page-header-title">Terms <em style="font-style:italic;color:var(--gold)">&amp; Conditions</em></h1>
+  </div>
+  <div class="policy-content">
+    <p style="color:var(--muted);font-size:0.78rem">Last updated: May 2026</p>
+    <h2>Use of This Website</h2>
+    <p>By accessing the LUFOSCA website, you agree to be bound by these Terms & Conditions. LUFOSCA reserves the right to update these terms at any time.</p>
+    <h2>Orders & Payments</h2>
+    <p>All orders are subject to availability and confirmation. LUFOSCA reserves the right to cancel any order in the event of pricing errors, stock issues, or suspected fraud.</p>
+    <h2>Intellectual Property</h2>
+    <p>All content on this website — including product images, brand name, and copy — is the intellectual property of LUFOSCA. Reproduction without written permission is prohibited.</p>
+    <h2>Liability</h2>
+    <p>LUFOSCA is not liable for delays caused by third-party courier services, customs, or force majeure events. We will, however, make every effort to resolve any delivery issues promptly.</p>
+    <h2>Governing Law</h2>
+    <p>These terms are governed by the laws of Pakistan. Any disputes will be resolved under Pakistani jurisdiction.</p>
+  </div>
+  ${renderFooter()}
+</div>
+
+<!-- LOGIN PAGE -->
+<div class="page" id="page-login">
+  <div class="page-header">
+    <div class="page-header-sub">✦ Welcome Back</div>
+    <h1 class="page-header-title">Sign <em style="font-style:italic;color:var(--gold)">In</em></h1>
+  </div>
+  <div style="max-width:460px;margin:0 auto;padding:0 1.5rem 4rem">
+    <div style="background:var(--surface);border:1px solid rgba(201,169,110,0.1);padding:2.5rem">
+      <div class="form-field"><label class="form-label">Email Address</label><input class="form-input" type="email" id="login-email" placeholder="your@email.com"></div>
+      <div class="form-field"><label class="form-label">Password</label><input class="form-input" type="password" id="login-pass" placeholder="Enter your password"></div>
+      <div style="text-align:right;margin:-0.5rem 0 1.2rem">
+        <span style="font-size:0.72rem;color:var(--gold);cursor:pointer;letter-spacing:0.05em" onclick="showToast('Password reset link sent to your email ✦')">Forgot password?</span>
+      </div>
+      <button class="checkout-btn" style="width:100%" onclick="doLogin()">Sign In</button>
+      <div style="text-align:center;margin-top:1.5rem;font-size:0.78rem;color:var(--muted)">
+        Don't have an account?
+        <span style="color:var(--gold);cursor:pointer;margin-left:4px" onclick="showPage('signup')">Create one ›</span>
+      </div>
+    </div>
+    <div style="margin-top:1.5rem;text-align:center">
+      <button class="btn-secondary" style="font-size:0.65rem;padding:0.5rem 1.5rem" onclick="showPage('home')">Continue as Guest</button>
+    </div>
+  </div>
+  ${renderFooter()}
+</div>
+
+<!-- SIGNUP PAGE -->
+<div class="page" id="page-signup">
+  <div class="page-header">
+    <div class="page-header-sub">✦ Join LUFOSCA</div>
+    <h1 class="page-header-title">Create <em style="font-style:italic;color:var(--gold)">Account</em></h1>
+  </div>
+  <div style="max-width:460px;margin:0 auto;padding:0 1.5rem 4rem">
+    <div style="background:var(--surface);border:1px solid rgba(201,169,110,0.1);padding:2.5rem">
+      <div class="form-row">
+        <div class="form-field"><label class="form-label">First Name</label><input class="form-input" id="signup-fname" placeholder="Ayla"></div>
+        <div class="form-field"><label class="form-label">Last Name</label><input class="form-input" id="signup-lname" placeholder="Rahman"></div>
+      </div>
+      <div class="form-field"><label class="form-label">Email Address</label><input class="form-input" type="email" id="signup-email" placeholder="your@email.com"></div>
+      <div class="form-field"><label class="form-label">Phone (WhatsApp)</label><input class="form-input" type="tel" id="signup-phone" placeholder="+92 300 0000000"></div>
+      <div class="form-field"><label class="form-label">Password</label><input class="form-input" type="password" id="signup-pass" placeholder="Min. 8 characters"></div>
+      <div class="form-field"><label class="form-label">Confirm Password</label><input class="form-input" type="password" id="signup-pass2" placeholder="Repeat password"></div>
+      <div style="margin:1rem 0;font-size:0.72rem;color:var(--muted);line-height:1.7">
+        By creating an account you agree to our
+        <span style="color:var(--gold);cursor:pointer" onclick="showPage('terms')">Terms & Conditions</span> and
+        <span style="color:var(--gold);cursor:pointer" onclick="showPage('privacy')">Privacy Policy</span>.
+      </div>
+      <button class="checkout-btn" style="width:100%" onclick="doSignup()">Create Account</button>
+      <div style="text-align:center;margin-top:1.5rem;font-size:0.78rem;color:var(--muted)">
+        Already have an account?
+        <span style="color:var(--gold);cursor:pointer;margin-left:4px" onclick="showPage('login')">Sign in ›</span>
+      </div>
+    </div>
+  </div>
+  ${renderFooter()}
+</div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ================================================================
+//  YOUR PRODUCTS — Edit this list to add, remove, or update items
+//  Fields:
+//    name     – Product name shown on card
+//    mat      – Material / subtitle
+//    price    – Price in Rs. e.g. "Rs. 3,200"
+//    old      – Original price (leave "" to hide strikethrough)
+//    badge    – Label on image: "New", "Sale", "Limited", or ""
+//    sym      – Decorative symbol shown as image placeholder
+//              (replace with an <img> tag once you have photos)
+//    category – "bestseller" | "new" | "all"  (controls which
+//              section the product appears in — can use multiple)
+//    img      – Path to your product image, e.g. "images/ring1.jpg"
+//              Leave "" to use the sym placeholder instead
+// ================================================================
+const PRODUCTS = [
+  // ── BEST SELLERS ──────────────────────────────────────────────
+  { name:"Black and White Pearl Bracelet with Moon & Star Charms", mat:"Beaded", price:"Rs. 500",  old:"Rs. 700",  badge:"New",     sym:'◈', category:"bestseller", img:"images/bw.jpeg" },
+  { name:"Forest Dew Glass Bangle",                                 mat:"Beaded", price:"Rs. 500",  old:"Rs. 700",  badge:"New",     sym:'◈', category:"bestseller", img:"images/fd.jpeg" },
+  { name:"Personalized Couple Initial Bead Bracelet",               mat:"Beaded", price:"Rs. 500",  old:"Rs. 700",  badge:"New",     sym:'◈', category:"bestseller", img:"images/cb.jpeg" },
+  { name:"Solar Flare Crystal Bracelet",                            mat:"Beaded", price:"Rs. 300",  old:"Rs. 500",  badge:"New",     sym:'◈', category:"bestseller", img:"images/sf.jpeg" },
+  { name:"Champagne Crystal Drop Earrings with Silver Chain Tassels", mat:"Beaded", price:"Rs. 300", old:"Rs. 500", badge:"New",    sym:'◈', category:"bestseller", img:"images/cc.jpeg" },
+  { name:"Morning Glow Linear Earrings",                            mat:"Beaded", price:"Rs. 300",  old:"Rs. 500",  badge:"New",     sym:'◈', category:"bestseller", img:"images/mg.jpeg" },
+  { name:"Pink Crackle Glass and White Pearl Beaded Hoop Earrings", mat:"Beaded", price:"Rs. 300",  old:"Rs. 500",  badge:"New",     sym:'◈', category:"bestseller", img:"images/pc.jpeg" },
+  { name:"Long Silver Chain Earrings with Champagne Crystal Beads", mat:"Beaded", price:"Rs. 350",  old:"Rs. 600",  badge:"New",     sym:'◈', category:"bestseller", img:"images/ls.jpeg" },
+  { name:"L'Amour Pearl Heart Pendant",                             mat:"Beaded", price:"Rs. 350",  old:"Rs. 600",  badge:"New",     sym:'◈', category:"bestseller", img:"images/la.jpeg" },
+  { name:"Elegant Pearl Drop Earrings",                             mat:"Beaded", price:"Rs. 500",  old:"Rs. 800",  badge:"Limited", sym:'◈', category:"bestseller", img:"images/ep.jpeg" },
+  { name:"Classic Pearl Petal Set",                                 mat:"Beaded", price:"Rs. 1,550", old:"Rs. 2,000", badge:"Limited", sym:'◈', category:"bestseller", img:"images/cp.jpeg" },
+  { name:"Asymmetric Pearl Blossom Set",                            mat:"Beaded", price:"Rs. 1,200", old:"Rs. 1,500", badge:"Limited", sym:'◈', category:"bestseller", img:"images/ap.jpeg" },
+  { name:"Personalized Character Bracelet",                         mat:"Beaded", price:"Rs. 600",  old:"Rs. 800",  badge:"Limited", sym:'◈', category:"bestseller", img:"images/pcb.jpeg" },
+  { name:"Handcrafted Luster Wristlets",                            mat:"Beaded", price:"Rs. 350–500", old:"Rs. 700", badge:"Limited", sym:'◈', category:"bestseller", img:"images/pcb.jpeg" },
+  { name:"The Gilded Petal Bracelet",                               mat:"Beaded", price:"Rs. 350",  old:"Rs. 700",  badge:"Limited", sym:'◈', category:"bestseller", img:"images/gp.jpeg" },
+  { name:"The Empress Pearl Clutch",                                mat:"Beaded", price:"Rs. 2,200", old:"Rs. 2,500", badge:"Limited", sym:'◈', category:"bestseller", img:"images/te.jpeg" },
+  { name:"Kawaii Personalized Bead Bracelet",                       mat:"Beaded", price:"Rs. 450",  old:"Rs. 600",  badge:"Limited", sym:'◈', category:"bestseller", img:"images/kp.jpeg" },
+  { name:"Lavender Mist Dreamcatcher Earrings",                     mat:"Beaded", price:"Rs. 650",  old:"Rs. 800",  badge:"Limited", sym:'◈', category:"bestseller", img:"images/lm.jpeg" },
+  { name:"Triple Layer Pearl & Crystal Cuff",                       mat:"Beaded", price:"Rs. 500",  old:"Rs. 800",  badge:"Limited", sym:'◈', category:"bestseller", img:"images/tl.jpeg" },
+  { name:"Gajra Bracelet",                                          mat:"Beaded", price:"Rs. 650",  old:"Rs. 800",  badge:"Limited", sym:'◈', category:"bestseller", img:"images/gjb.jpeg" },
+  { name:"The Ethereal Dewdrop Bracelet",                           mat:"Beaded", price:"Rs. 550",  old:"Rs. 800",  badge:"Limited", sym:'◈', category:"bestseller", img:"images/tes.jpeg" },
+  { name:"Petal & Pearl Bands",                                     mat:"Beaded", price:"Rs. 400",  old:"Rs. 600",  badge:"Limited", sym:'◈', category:"bestseller", img:"images/pp.jpeg" },
+  { name:"Golden Hour Link Bracelet",                               mat:"Beaded", price:"Rs. 400",  old:"Rs. 800",  badge:"Sale",    sym:'◈', category:"bestseller", img:"images/gh.jpeg" },
+  { name:"The Royal Pearl Gala Set",                                mat:"Beaded", price:"Rs. 1,200", old:"Rs. 1,500", badge:"Sale",  sym:'◈', category:"bestseller", img:"images/tr.jpeg" },
+  { name:"The Crimson Blossom Hathphool",                           mat:"Beaded", price:"Rs. 700",  old:"Rs. 900",  badge:"Sale",    sym:'◈', category:"bestseller", img:"images/tc.jpeg" },
+  { name:"Blush Willow Earrings",                                   mat:"Beaded", price:"Rs. 750",  old:"Rs. 900",  badge:"Sale",    sym:'◈', category:"bestseller", img:"images/bwe.jpeg" },
+  { name:"The Royal Fuchsia Bells",                                 mat:"Beaded", price:"Rs. 350",  old:"Rs. 500",  badge:"Sale",    sym:'◈', category:"bestseller", img:"images/trf.jpeg" },
+  { name:"The Whimsical Charm Collection",                          mat:"Beaded", price:"Rs. 450",  old:"Rs. 700",  badge:"Sale",    sym:'◈', category:"bestseller", img:"images/twc.jpeg" },
+  { name:"Velvet Rose Bloom Bracelet",                              mat:"Beaded", price:"Rs. 550",  old:"Rs. 900",  badge:"Sale",    sym:'◈', category:"bestseller", img:"images/vrb.jpeg" },
+  { name:"Rosé Pearl Symphony",                                     mat:"Beaded", price:"Rs. 550",  old:"Rs. 900",  badge:"Sale",    sym:'◈', category:"bestseller", img:"images/rp.jpeg" },
+  { name:"Coquette Crystal Bow Chain",                              mat:"Beaded", price:"Rs. 450",  old:"Rs. 700",  badge:"Sale",    sym:'◈', category:"bestseller", img:"images/ccc.jpeg" },
+  { name:"Midnight Onyx Set",                                       mat:"Beaded", price:"Rs. 1,000", old:"Rs. 1,400", badge:"Sale",  sym:'◈', category:"bestseller", img:"images/mos.jpeg" },
+
+  // ── NEW ARRIVALS ──────────────────────────────────────────────
+  { name:"Red & Black Beaded Stack Bracelets",                      mat:"Beaded", price:"Rs. 300",  old:"Rs. 600",  badge:"New",     sym:'✧', category:"new", img:"images/rb.jpeg" },
+  { name:"Blush Crystal Chain Drop Earrings",                       mat:"Beaded", price:"Rs. 400",  old:"Rs. 800",  badge:"New",     sym:'✧', category:"new", img:"images/bc.jpeg" },
+  { name:"Noir Pearl Wristlet",                                     mat:"Beaded", price:"Rs. 750",  old:"Rs. 1,000", badge:"New",    sym:'✧', category:"new", img:"images/np.jpeg" },
+  { name:"Satin Trinity Rose Bracelet",                             mat:"Beaded", price:"Rs. 550",  old:"Rs. 800",  badge:"New",     sym:'✧', category:"new", img:"images/st.jpeg" },
+  { name:"The Grand Bow Charm",                                     mat:"Beaded", price:"Rs. 650",  old:"Rs. 800",  badge:"New",     sym:'✧', category:"new", img:"images/gb.jpeg" },
+  { name:"Noir & Ivory Phone Strap",                                mat:"Beaded", price:"Rs. 400",  old:"Rs. 700",  badge:"New",     sym:'✧', category:"new", img:"images/ps.jpeg" },
+  { name:"Pearl Whisper Hand Chain",                                mat:"Beaded", price:"Rs. 650",  old:"Rs. 800",  badge:"New",     sym:'✧', category:"new", img:"images/pw.jpeg" },
+  { name:"Vintage Ruby-Drop Ear Saharas",                           mat:"Beaded", price:"Rs. 1,250", old:"",        badge:"New",     sym:'✧', category:"new", img:"images/vr.jpeg" },
+];
+
+// ── Helper: renders a single product card ─────────────────────
+function renderCard(p) {
+  const imgContent = p.img
+    ? `<img src="${p.img}" alt="${p.name}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+    : '';
+  const placeholderStyle = p.img ? 'display:none;' : '';
+  const safeName = p.name.replace(/'/g, "\\'");
+  return `
+    <div class="product-card">
+      <div class="product-img" onclick="showPage('product')" style="cursor:pointer;position:relative">
+        ${imgContent}
+        <div class="product-img-placeholder" style="${placeholderStyle}position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem">
+          <span style="font-family:var(--serif);font-size:3rem;color:rgba(201,169,110,0.35)">${p.sym}</span>
+          <span style="font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(201,169,110,0.25)">Add photo in PRODUCTS</span>
+        </div>
+        ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ''}
+        <button class="product-wishlist" onclick="event.stopPropagation();toggleWish(this)" title="Wishlist">♡</button>
+      </div>
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-material">${p.mat}</div>
+        <div class="product-price">
+          <span class="price-current">${p.price}</span>
+          ${p.old ? `<span class="price-old">${p.old}</span>` : ''}
+        </div>
+        <button class="btn-primary" style="width:100%;text-align:center;margin-top:0.8rem;padding:0.6rem;font-size:0.65rem" onclick="event.stopPropagation();addToCart('${safeName}')">Add to Cart</button>
+      </div>
+    </div>`;
+}
+
+function allProductsHTML(){
+  return PRODUCTS.map(renderCard).join('');
+}
+
+function productCardsHTML(){
+  // Show first 8 bestsellers on home page
+  return PRODUCTS.filter(p => p.category === 'bestseller').slice(0,8).map(renderCard).join('');
+}
+
+function newArrivalsHTML(){
+  return PRODUCTS.filter(p => p.category === 'new').map(renderCard).join('');
+}
+
+function collectionsHTML(){
+  const cols=[
+    {name:'Crystal Reverie',desc:'Luminous crystal pieces that catch every light. From statement bracelets to delicate earrings, each piece in this collection is a quiet declaration of elegance.',count:'24 pieces',sym:'◈',bg:'#1a1428'},
+    {name:'Pearl Lumière',desc:'Freshwater pearls reimagined for the modern woman. Classic, pure, and endlessly versatile — this collection is timeless femininity at its finest.',count:'18 pieces',sym:'✦',bg:'#1c1810'},
+    {name:'Midnight Beads',desc:'Deep-toned beaded jewelry for the woman who moves through the world with quiet power. Black, navy, and jewel tones for every occasion.',count:'32 pieces',sym:'⬡',bg:'#14181c'},
+    {name:'Velvet Heirlooms',desc:'Our most exclusive, limited-edition collection. Each piece is made in small batches and features rare materials. Once they\'re gone, they\'re gone.',count:'12 pieces — Limited',sym:'❋',bg:'#1a1020'},
+  ];
+  return `<div style="display:flex;flex-direction:column;gap:2rem">${cols.map(c=>`
+    <div class="collection-row-card" onmouseover="this.style.borderColor='rgba(201,169,110,0.3)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.1)'" onclick="showPage('shop')">
+      <div class="collection-row-img" style="background:${c.bg}">${c.sym}</div>
+      <div style="padding:2.5rem">
+        <div class="collection-tag" style="margin-bottom:0.5rem"><span class="col-gem"></span>Collection</div>
+        <div style="font-family:var(--serif);font-size:1.8rem;color:var(--cream);margin-bottom:0.7rem">${c.name}</div>
+        <div style="font-size:0.82rem;color:var(--muted);line-height:1.8;margin-bottom:1.2rem">${c.desc}</div>
+        <div style="font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold)">${c.count} ›</div>
+      </div>
+    </div>`).join('')}</div>`;
+}
+
+function reviewsHTML(){
+  const reviews=[
+    {name:'Ayla R.',loc:'Lahore',stars:5,text:'The Moon Pearl Set is everything. Delicate, luminous, and utterly unforgettable. I have never received so many compliments.',date:'April 2026'},
+    {name:'Misha T.',loc:'Karachi',stars:5,text:'LUFOSCA jewelry is not just an accessory — it is a feeling. The Crystal Reverie bracelet makes me feel powerful every single day.',date:'March 2026'},
+    {name:'Sana K.',loc:'Islamabad',stars:5,text:'Handmade quality that shows in every bead. My order arrived beautifully packaged — like a luxury gift to myself.',date:'March 2026'},
+    {name:'Zara M.',loc:'Lahore',stars:5,text:'I ordered the Velvet Noir and it arrived within 4 days, perfectly wrapped. The quality is exceptional for handmade jewelry.',date:'February 2026'},
+    {name:'Hina F.',loc:'Faisalabad',stars:5,text:'My sister and I both ordered matching bracelets. They are identical in quality — you can tell each one is made with real attention and care.',date:'February 2026'},
+    {name:'Amna S.',loc:'Rawalpindi',stars:4,text:'Beautiful piece. The Rose Quartz collar is even more stunning in person. Slightly longer delivery but absolutely worth the wait.',date:'January 2026'},
+  ];
+  return reviews.map(r=>`
+    <div class="review-card">
+      <div class="reviewer-row">
+        <div>
+          <div class="reviewer-name">${r.name} — ${r.loc}</div>
+          <div class="rating-stars" style="font-size:0.75rem;margin-top:3px">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+        </div>
+        <div class="review-date">${r.date}</div>
+      </div>
+      <div class="review-text">"${r.text}"</div>
+      <div class="review-verified">✓ Verified Purchase</div>
+    </div>`).join('');
+}
+
+function faqHTML(){
+  const faqs=[
+    ['Is LUFOSCA jewelry really handmade?','Yes, absolutely. Every single piece is crafted by hand — from threading each bead to finishing the clasps. We do not use machines or mass production. Each piece takes genuine time and skill to make.'],
+    ['How do I place an order?','You can order directly through our website, or DM us on Instagram @lufosca. We confirm all orders via WhatsApp before dispatch.'],
+    ['What are your payment options?','We accept Cash on Delivery (COD), JazzCash, EasyPaisa, and bank transfer. More payment methods coming soon.'],
+    ['How long will delivery take?','Standard delivery across Pakistan takes 3–5 business days. Orders are dispatched within 1–2 days of confirmation. Express delivery is available.'],
+    ['Can I request a custom piece?','Yes! We love custom orders. Share your vision with us via WhatsApp or email and we will do our best to bring it to life.'],
+    ['How do I care for my jewelry?','Store your pieces in the LUFOSCA pouch, away from moisture. Avoid contact with perfume, lotions, and water. Wipe gently with a soft cloth after each wear.'],
+    ['What if my jewelry breaks?','LUFOSCA jewelry is made to last, but accidents happen. Contact us within 30 days and we will repair or replace your piece.'],
+    ['Do you ship internationally?','Currently we ship within Pakistan only. International shipping is coming soon — follow us on Instagram for updates.'],
+  ];
+  return faqs.map(([q,a])=>`
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>${q}</span><span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">${a}</div>
+    </div>`).join('');
+}
+
+function wishlistHTML(){
+  const items=[
+    {name:'Moon Pearl Set',mat:'Freshwater Pearls',price:'Rs. 4,800',sym:'✦'},
+    {name:'Rose Quartz Collar',mat:'Natural Rose Quartz',price:'Rs. 5,200',sym:'✧'},
+    {name:'Celestial Bead Set',mat:'Lapis · Crystal',price:'Rs. 6,800',sym:'✺'},
+    {name:'Crystal Halo Earrings',mat:'Swarovski Crystal',price:'Rs. 2,400',sym:'◇'},
+  ];
+  return items.map(p=>`
+    <div class="product-card" onclick="showPage('product')">
+      <div class="product-img">
+        <div class="product-img-placeholder">${p.sym}</div>
+        <button class="product-wishlist active" onclick="event.stopPropagation();showToast('Removed from wishlist')">♥</button>
+      </div>
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-material">${p.mat}</div>
+        <div class="product-price"><span class="price-current">${p.price}</span></div>
+        <button class="btn-primary" style="width:100%;text-align:center;margin-top:0.8rem;padding:0.6rem" onclick="event.stopPropagation();showToast('Added to cart ✦');updateCartCount()">Add to Cart</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderFooter(){
+  return `<footer>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">LUFOSCA</div>
+          <div class="footer-tagline">Handcrafted beaded jewelry for the woman who wears elegance as her second skin.</div>
+          <div class="footer-social">
+            <div class="social-btn" title="Instagram">◈</div>
+            <div class="social-btn" title="Facebook">f</div>
+            <div class="social-btn" title="WhatsApp" onclick="window.open('https://wa.me/923258639241','_blank')" style="cursor:pointer">✆</div>
+            <div class="social-btn" title="TikTok">▷</div>
+          </div>
+        </div>
+        <div>
+          <div class="footer-heading">Shop</div>
+          <ul class="footer-links">
+            <li><a onclick="showPage('shop')">Shop All</a></li>
+            <li><a onclick="showPage('shop')">New Arrivals</a></li>
+            <li><a onclick="showPage('shop')">Best Sellers</a></li>
+            <li><a onclick="showPage('wishlist')">Wishlist</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-heading">Help</div>
+          <ul class="footer-links">
+            <li><a onclick="showPage('faq')">FAQ</a></li>
+            <li><a onclick="showPage('track')">Track Order</a></li>
+            <li><a onclick="showPage('size')">Size Guide</a></li>
+            <li><a onclick="showPage('shipping')">Shipping & Returns</a></li>
+            <li><a onclick="showPage('contact')">Contact Us</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-heading">Company</div>
+          <ul class="footer-links">
+            <li><a onclick="showPage('about')">About LUFOSCA</a></li>
+            <li><a onclick="showPage('about')">Our Craftsmanship</a></li>
+            <li><a onclick="showPage('reviews')">Reviews</a></li>
+            <li><a onclick="showPage('privacy')">Privacy Policy</a></li>
+            <li><a onclick="showPage('terms')">Terms & Conditions</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copy">© 2026 LUFOSCA. All rights reserved. Crafted with devotion.</div>
+        <div class="footer-policies">
+          <a onclick="showPage('privacy')">Privacy</a>
+          <a onclick="showPage('terms')">Terms</a>
+          <a onclick="showPage('shipping')">Shipping</a>
+        </div>
+      </div>
+    </div>
+  </footer>`;
+}
+
+// INJECT DYNAMIC CONTENT — inject into every page that uses template placeholders
+function injectPage(id, replacements) {
+  const el = document.getElementById('page-' + id);
+  if (!el) return;
+  let html = el.innerHTML;
+  for (const [key, val] of Object.entries(replacements)) {
+    html = html.split('${' + key + '}').join(val);
+  }
+  el.innerHTML = html;
+}
+
+const footer = renderFooter();
+const cards  = productCardsHTML();
+const newArr = newArrivalsHTML();
+const allPrd = allProductsHTML();
+const colls  = collectionsHTML();
+const revs   = reviewsHTML();
+const faqs   = faqHTML();
+const wishl  = wishlistHTML();
+
+injectPage('home', {
+  'productCardsHTML()': cards,
+  'newArrivalsHTML()': newArr,
+  'collectionsHTML()': colls,
+  'reviewsHTML()': revs,
+  'faqHTML()': faqs,
+  'wishlistHTML()': wishl,
+  'renderFooter()': footer
+});
+injectPage('shop',       { 'allProductsHTML()': allPrd, 'renderFooter()': footer });
+injectPage('collections',{ 'collectionsHTML()': colls,  'renderFooter()': footer });
+injectPage('product',    { 'productCardsHTML()': cards, 'renderFooter()': footer });
+injectPage('reviews',    { 'reviewsHTML()': revs,        'renderFooter()': footer });
+injectPage('faq',        { 'faqHTML()': faqs,            'renderFooter()': footer });
+injectPage('about',      { 'renderFooter()': footer });
+injectPage('contact',    { 'renderFooter()': footer });
+injectPage('cart',       { 'renderFooter()': footer });
+injectPage('checkout',   { 'renderFooter()': footer });
+injectPage('wishlist',   { 'wishlistHTML()': wishl,      'renderFooter()': footer });
+injectPage('track',      { 'renderFooter()': footer });
+injectPage('size',       { 'renderFooter()': footer });
+injectPage('shipping',   { 'renderFooter()': footer });
+injectPage('login',      { 'renderFooter()': footer });
+injectPage('signup',     { 'renderFooter()': footer });
+injectPage('privacy',    { 'renderFooter()': footer });
+injectPage('terms',      { 'renderFooter()': footer });
+
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const target = document.getElementById('page-'+id);
+  if(target){
+    target.classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  closeMobileMenu();
+}
+
+function toggleMobileMenu(){
+  const menu = document.getElementById('mobile-menu');
+  const ham = document.getElementById('hamburger');
+  const isOpen = menu.classList.contains('open');
+  menu.classList.toggle('open');
+  ham.classList.toggle('open');
+  document.body.style.overflow = isOpen ? '' : 'hidden';
+}
+
+function closeMobileMenu(){
+  const menu = document.getElementById('mobile-menu');
+  const ham = document.getElementById('hamburger');
+  if(menu) menu.classList.remove('open');
+  if(ham) ham.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+let qty=1;
+function changeQty(d){
+  qty=Math.max(1,qty+d);
+  document.getElementById('qty-val').textContent=qty;
+}
+
+// ── CART ENGINE ───────────────────────────────────────────────
+let cart = []; // { product, qty }
+
+function addToCart(productName) {
+  // If called from detail page without a name, use the current detail product
+  const name = productName || 'Amethyst Dream Bracelet';
+  const p = PRODUCTS.find(x => x.name === name);
+  if (!p) { showToast('Product not found'); return; }
+  const existing = cart.find(x => x.product.name === name);
+  const addQty = (productName ? 1 : qty); // use qty selector on detail page
+  if (existing) { existing.qty += addQty; } else { cart.push({ product: p, qty: addQty }); }
+  updateCartCount();
+  showToast('Added to cart ✦');
+  renderCart();
+}
+
+function removeFromCart(productName) {
+  cart = cart.filter(x => x.product.name !== productName);
+  updateCartCount();
+  renderCart();
+  showToast('Item removed from cart');
+}
+
+function changeCartQty(productName, delta) {
+  const item = cart.find(x => x.product.name === productName);
+  if (!item) return;
+  item.qty = Math.max(1, item.qty + delta);
+  renderCart();
+}
+
+function getCartTotal() {
+  return cart.reduce((sum, item) => {
+    // Handle range prices like "Rs. 350–500" by taking the first number
+    const match = item.product.price.match(/[\d,]+/);
+    const price = match ? parseInt(match[0].replace(/,/g, '')) : 0;
+    return sum + price * item.qty;
+  }, 0);
+}
+
+function renderCart() {
+  const container = document.getElementById('cart-items');
+  if (!container) return;
+  if (cart.length === 0) {
+    container.innerHTML = `<div style="text-align:center;padding:4rem 1rem;color:var(--muted)">
+      <div style="font-family:var(--serif);font-size:3rem;margin-bottom:1rem;opacity:0.3">◈</div>
+      <div style="font-size:0.85rem;margin-bottom:1.5rem">Your cart is empty</div>
+      <button class="btn-primary" onclick="showPage('shop')">Start Shopping</button>
+    </div>`;
+    document.getElementById('cart-summary-lines').innerHTML = '';
+    document.getElementById('cart-total-display').textContent = 'Rs. 0';
+    return;
+  }
+  container.innerHTML = cart.map(item => {
+    const p = item.product;
+    const imgHtml = p.img
+      ? `<img src="${p.img}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;display:block;">`
+      : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:rgba(201,169,110,0.3)">${p.sym}</div>`;
+    return `<div class="cart-item">
+      <div class="cart-item-img" style="overflow:hidden;padding:0">${imgHtml}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${p.name}</div>
+        <div class="cart-item-detail">${p.mat || 'Handmade'}</div>
+        <div class="qty-row" style="margin:0.8rem 0">
+          <button class="qty-btn" style="width:28px;height:28px;font-size:0.9rem" onclick="changeCartQty('${p.name.replace(/'/g,"\\'")}', -1);renderCart()">−</button>
+          <span class="qty-val" style="font-size:0.9rem">${item.qty}</span>
+          <button class="qty-btn" style="width:28px;height:28px;font-size:0.9rem" onclick="changeCartQty('${p.name.replace(/'/g,"\\'")}', 1);renderCart()">+</button>
+        </div>
+        <div class="cart-item-price">${p.price}</div>
+      </div>
+      <button style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.2rem;align-self:flex-start" onclick="removeFromCart('${p.name.replace(/'/g,"\\'")}')">×</button>
+    </div>`;
+  }).join('');
+
+  const total = getCartTotal();
+  document.getElementById('cart-summary-lines').innerHTML =
+    `<div class="summary-row"><span>Subtotal (${cart.length} item${cart.length>1?'s':''})</span><span>Rs. ${total.toLocaleString()}</span></div>`;
+  document.getElementById('cart-total-display').textContent = `Rs. ${total.toLocaleString()}`;
+}
+
+function renderCheckoutSummary() {
+  const lines = document.getElementById('checkout-cart-lines');
+  if (!lines) return;
+  lines.innerHTML = cart.map(item => {
+    const p = item.product;
+    const imgHtml = p.img
+      ? `<img src="${p.img}" alt="${p.name}" style="width:45px;height:55px;object-fit:cover;display:block;">`
+      : `<div style="width:45px;height:55px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:rgba(201,169,110,0.3)">${p.sym}</div>`;
+    return `<div style="display:flex;gap:1rem;margin-bottom:0.8rem;align-items:center">
+      <div style="flex-shrink:0;overflow:hidden">${imgHtml}</div>
+      <div style="flex:1">
+        <div style="font-size:0.8rem;color:var(--cream)">${p.name} ${item.qty > 1 ? `×${item.qty}` : ''}</div>
+        <div style="font-size:0.7rem;color:var(--muted)">${p.price}</div>
+      </div>
+    </div>`;
+  }).join('');
+  const total = getCartTotal();
+  const sub = document.getElementById('checkout-subtotal');
+  const tot = document.getElementById('checkout-total');
+  if (sub) sub.textContent = `Rs. ${total.toLocaleString()}`;
+  if (tot) tot.textContent = `Rs. ${total.toLocaleString()}`;
+}
+
+function goToCheckout() {
+  if (cart.length === 0) { showToast('Your cart is empty'); return; }
+  showPage('checkout');
+  renderCheckoutSummary();
+}
+
+function placeOrder() {
+  if (cart.length === 0) { showToast('Your cart is empty'); return; }
+
+  // Gather form fields
+  const fname    = (document.getElementById('co-fname')    || {}).value || '';
+  const lname    = (document.getElementById('co-lname')    || {}).value || '';
+  const phone    = (document.getElementById('co-phone')    || {}).value || '';
+  const addr     = (document.getElementById('co-addr')     || {}).value || '';
+  const city     = (document.getElementById('co-city')     || {}).value || '';
+  const province = (document.getElementById('co-province') || {}).value || '';
+
+  // Get selected payment
+  const payActive = document.querySelector('.payment-option.active .payment-label');
+  const payment   = payActive ? payActive.textContent : 'COD';
+
+  // Build order lines
+  const lines = cart.map(item =>
+    `• ${item.product.name} (x${item.qty}) — ${item.product.price}`
+  ).join('\n');
+  const total = getCartTotal();
+
+  const msg =
+`🛍️ *New Order — LUFOSCA*
+
+👤 *Customer:* ${fname} ${lname}
+📞 *Phone:* ${phone}
+📍 *Address:* ${addr}, ${city}, ${province}
+
+🛒 *Items:*
+${lines}
+
+💰 *Total:* Rs. ${total.toLocaleString()}
+💳 *Payment:* ${payment}
+
+_Sent via lufoscajewels.com_`;
+
+  const waUrl = 'https://wa.me/923258639241?text=' + encodeURIComponent(msg);
+  window.open(waUrl, '_blank');
+
+  showToast('Opening WhatsApp with your order ✦');
+  cart = [];
+  updateCartCount();
+  renderCart();
+}
+
+// ── AUTH ───────────────────────────────────────────────────────
+let currentUser = null;
+
+function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  if (!email || !pass) { showToast('Please fill in all fields'); return; }
+  // Simple local auth — replace with real backend if needed
+  const stored = localStorage.getItem('lufosca_user_' + email);
+  if (!stored) { showToast('No account found. Please sign up first.'); return; }
+  const user = JSON.parse(stored);
+  if (user.password !== pass) { showToast('Incorrect password. Please try again.'); return; }
+  currentUser = user;
+  showToast('Welcome back, ' + user.fname + ' ✦');
+  updateAuthNav();
+  showPage('home');
+}
+
+function doSignup() {
+  const fname = document.getElementById('signup-fname').value.trim();
+  const lname = document.getElementById('signup-lname').value.trim();
+  const email = document.getElementById('signup-email').value.trim();
+  const phone = document.getElementById('signup-phone').value.trim();
+  const pass = document.getElementById('signup-pass').value;
+  const pass2 = document.getElementById('signup-pass2').value;
+  if (!fname || !email || !pass) { showToast('Please fill in all required fields'); return; }
+  if (pass !== pass2) { showToast('Passwords do not match'); return; }
+  if (pass.length < 8) { showToast('Password must be at least 8 characters'); return; }
+  const user = { fname, lname, email, phone, password: pass };
+  localStorage.setItem('lufosca_user_' + email, JSON.stringify(user));
+  currentUser = user;
+  showToast('Account created! Welcome, ' + fname + ' ✦');
+  updateAuthNav();
+  showPage('home');
+}
+
+function doLogout() {
+  currentUser = null;
+  updateAuthNav();
+  showToast('Signed out successfully');
+  showPage('home');
+}
+
+function updateAuthNav() {
+  const authLink = document.getElementById('nav-auth-link');
+  const mobileAuthLink = document.getElementById('mobile-auth-link');
+  if (authLink) {
+    if (currentUser) {
+      authLink.innerHTML = `<span style="cursor:pointer;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)" onclick="doLogout()">Sign Out (${currentUser.fname})</span>`;
+    } else {
+      authLink.innerHTML = `<span style="cursor:pointer;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted)" onclick="showPage('login')">Sign In</span>`;
+    }
+  }
+  if (mobileAuthLink) {
+    if (currentUser) {
+      mobileAuthLink.textContent = `Sign Out (${currentUser.fname})`;
+      mobileAuthLink.onclick = () => { doLogout(); };
+      mobileAuthLink.style.color = 'var(--gold)';
+    } else {
+      mobileAuthLink.textContent = 'Sign In';
+      mobileAuthLink.onclick = () => showPage('login');
+      mobileAuthLink.style.color = '';
+    }
+  }
+}
+
+function toggleWish(btn){
+  btn.classList.toggle('active');
+  btn.textContent = btn.classList.contains('active') ? '♥' : '♡';
+  showToast(btn.classList.contains('active') ? 'Added to wishlist ♥' : 'Removed from wishlist');
+}
+
+let detailWished=false;
+function toggleDetailWish(){
+  detailWished=!detailWished;
+  const btn=document.getElementById('detail-wish');
+  btn.textContent=detailWished?'♥':'♡';
+  btn.style.color=detailWished?'#FF6B8A':'';
+  btn.style.borderColor=detailWished?'#FF6B8A':'';
+  showToast(detailWished?'Added to wishlist ♥':'Removed from wishlist');
+}
+
+function selectSwatch(el){
+  document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function toggleAcc(header){
+  const body=header.nextElementSibling;
+  const toggle=header.querySelector('.faq-toggle');
+  const isOpen=body.classList.contains('open');
+  document.querySelectorAll('.acc-body').forEach(b=>b.classList.remove('open'));
+  document.querySelectorAll('.acc-header .faq-toggle').forEach(t=>t.textContent='+');
+  if(!isOpen){body.classList.add('open');toggle.textContent='−';}
+}
+
+function toggleFaq(header){
+  const body=header.nextElementSibling;
+  const toggle=header.querySelector('.faq-toggle');
+  const isOpen=body.classList.contains('open');
+  document.querySelectorAll('.faq-a').forEach(b=>b.classList.remove('open'));
+  document.querySelectorAll('.faq-q .faq-toggle').forEach(t=>t.textContent='+');
+  if(!isOpen){body.classList.add('open');toggle.textContent='−';}
+}
+
+function setFilter(btn, val){
+  // Only deactivate buttons in the same logical group (separated by filter-label spans)
+  const bar = btn.closest('.filter-bar');
+  const allBtns = Array.from(bar.querySelectorAll('.filter-btn'));
+  const labels = Array.from(bar.children);
+
+  // Find which group this button belongs to by scanning for label separators
+  let groupStart = 0;
+  let groupEnd = allBtns.length;
+  let btnIndex = allBtns.indexOf(btn);
+
+  // Build groups separated by .filter-label spans
+  let groups = [];
+  let currentGroup = [];
+  for (const child of labels) {
+    if (child.classList.contains('filter-label')) {
+      if (currentGroup.length) groups.push(currentGroup);
+      currentGroup = [];
+    } else if (child.classList.contains('filter-btn')) {
+      currentGroup.push(child);
+    }
+  }
+  if (currentGroup.length) groups.push(currentGroup);
+
+  // Find the group containing our button and reset only that group
+  for (const group of groups) {
+    if (group.includes(btn)) {
+      group.forEach(b => b.classList.remove('active'));
+      break;
+    }
+  }
+  btn.classList.add('active');
+  showToast('Filter applied: ' + val);
+}
+
+function filterProducts(val){
+  showToast(val?'Searching for: '+val:'Showing all products');
+}
+
+function updateCartCount(){
+  const count = cart.reduce((s,i)=>s+i.qty,0);
+  const el = document.getElementById('cart-count');
+  if(el) el.textContent = count;
+}
+
+function selectPayment(el, type){
+  document.querySelectorAll('.payment-option').forEach(o=>o.classList.remove('active'));
+  document.querySelectorAll('.payment-radio-dot').forEach(d=>d.style.display='none');
+  ['jazz-details','easy-details'].forEach(id=>{
+    const d=document.getElementById(id);if(d)d.style.display='none';
+  });
+  el.classList.add('active');
+  el.querySelector('.payment-radio-dot').style.display='block';
+  if(type==='jazz'){const d=document.getElementById('jazz-details');if(d)d.style.display='block';}
+  if(type==='easy'){const d=document.getElementById('easy-details');if(d)d.style.display='block';}
+}
+
+function sendContactEmail(){
+  const name    = document.getElementById('contact-name').value.trim();
+  const email   = document.getElementById('contact-email').value.trim();
+  const subject = document.getElementById('contact-subject').value;
+  const message = document.getElementById('contact-message').value.trim();
+  if(!name || !message){ showToast('Please fill in your name and message'); return; }
+  const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
+  const mailto = `mailto:lufoscajewels@gmail.com?subject=${encodeURIComponent('[LUFOSCA] ' + subject)}&body=${encodeURIComponent(body)}`;
+  window.location.href = mailto;
+  showToast('Opening your email client ✦');
+}
+
+function trackOrder(){
+  const val=document.getElementById('track-input').value;
+  if(val.trim()){
+    document.getElementById('track-result').style.display='block';
+    showToast('Order found: '+val);
+  } else {
+    showToast('Please enter your order number');
+  }
+}
+
+// Initialize
+renderCart();
+updateAuthNav();
+
+</script>
